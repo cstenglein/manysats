@@ -1,14 +1,14 @@
-import { FC } from 'react';
+import { FC } from "react";
 
 const Input: FC = () => {
   const onChangeHandler = () => {};
 
   return (
-    <div className='w-full flex my-8'>
+    <div className="my-8 flex w-full">
       <input
-        className='text-right bg-gray-800 border-b border-white outline-none focus:border-blue-400'
-        type='text'
-        inputMode='decimal'
+        className="border-b border-white bg-gray-800 text-right outline-none focus:border-blue-400"
+        type="text"
+        inputMode="decimal"
       ></input>
       <label>€</label>
     </div>
