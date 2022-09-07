@@ -45,15 +45,15 @@ const Main = () => {
   }, []);
 
   return (
-    <main className='h-screen flex flex-col items-center bg-slate-900 text-white'>
+    <main className='h-screen flex flex-col items-center bg-gray-200'>
       <h1 className='text-4xl p-8 mb-8'>ManySats</h1>
-      <section className='flex items-center flex-col'>
-        <article className='w-full mx-5 flex justify-start'>
-          <p className='bg-indigo-600 p-2 -my-5 rounded-full text-white text-sm z-10'>{formattedPrice} € / BTC</p>
+      <section className='w-11/12 md:w-auto flex items-center flex-col text-white'>
+        <article className='w-full mx-5 flex justify-start px-2'>
+          <p className='bg-blue-500 p-2 -my-5 rounded-full text-white text-sm z-10'>{formattedPrice} € / BTC</p>
         </article>
-        <article className='flex p-20 bg-indigo-500 w-full shadow-xl'>
+        <article className='flex p-20 bg-blue-600 w-full shadow-xl rounded-t-xl justify-center'>
           <input
-            className='text-right border-b border-white outline-none focus:border-indigo-800 p-2 bg-indigo-500'
+            className='border-b border-white outline-none focus:border-indigo-800 p-2 bg-blue-700'
             type='text'
             inputMode='decimal'
             value={fiatAmount}
@@ -61,9 +61,9 @@ const Main = () => {
           ></input>
           <label className='p-2'>€</label>
         </article>
-        <article className='flex p-20 bg-indigo-600 w-full'>
+        <article className='flex p-20 bg-blue-700 w-full rounded-b-xl justify-center'>
           <input
-            className='text-right border-b border-white outline-none focus:border-indigo-200 p-2 bg-indigo-600'
+            className='border-b border-white outline-none focus:border-indigo-200 p-2 bg-indigo-600'
             type='text'
             inputMode='decimal'
             value={satAmount}
