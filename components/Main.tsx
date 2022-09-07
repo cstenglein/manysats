@@ -9,9 +9,7 @@ const Main = () => {
   const onChangeFiatHandler = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const input = event.target.value.replace(/[^0-9.]/g, "");
-    const formattedInput = input.endsWith(".")
-      ? input
-      : new Intl.NumberFormat("en-US").format(+input);
+    const formattedInput = input.endsWith(".") ? input : new Intl.NumberFormat("en-US").format(+input);
     setFiatAmount(formattedInput);
     console.log("CHANGE FIAT", formattedInput);
     // format output
@@ -23,9 +21,7 @@ const Main = () => {
   const onChangeSatHandler = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const input = event.target.value.replace(/[^0-9.]/g, "");
-    const formattedInput = input.endsWith(".")
-      ? input
-      : new Intl.NumberFormat("en-US").format(+input);
+    const formattedInput = input.endsWith(".") ? input : new Intl.NumberFormat("en-US").format(+input);
     setSatAmount(formattedInput);
     console.log("CHANGE SAT", formattedInput);
     // format output
@@ -53,9 +49,7 @@ const Main = () => {
       <h1 className="mb-8 p-8 text-4xl">ManySats</h1>
       <section className="flex w-11/12 flex-col items-center text-white shadow-xl md:w-auto">
         <article className="mx-5 flex w-full justify-start px-2">
-          <p className="z-10 -my-5 rounded-full bg-blue-500 p-2 text-sm text-white">
-            {formattedPrice} € / BTC
-          </p>
+          <p className="z-10 -my-5 rounded-full bg-blue-500 p-2 text-sm text-white">{formattedPrice} € / BTC</p>
         </article>
         <article className="flex w-full justify-center rounded-t-xl bg-blue-600 p-20">
           <input
