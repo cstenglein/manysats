@@ -49,7 +49,7 @@ const Converter: FC = () => {
         <Image src={"/btc-icon.svg"} height="40px" alt="btcicon" width="40px" /> <span className="ml-2">ManySats</span>
       </h1>
       <h6 className="mb-8 p-8 text-center text-2xl italic text-blue-500">Your simple Fiat to Satoshi Converter</h6>
-      <section className="flex w-11/12 flex-col items-center border border-blue-400 bg-white shadow-md md:w-auto">
+      <section className="flex w-11/12 flex-col items-center rounded border border-blue-400 bg-white shadow-md md:w-auto">
         {/* price pill */}
         <article className="mx-5 flex w-full justify-start px-2">
           <p className="z-10 -my-5 rounded-full bg-blue-500 p-2 text-sm text-white">{formattedPrice} € / BTC</p>
