@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 
-const Main = () => {
+const Converter: FC = () => {
   const [fiatAmount, setFiatAmount] = useState<string>("");
   const [satAmount, setSatAmount] = useState<string>("");
   const [price, setPrice] = useState<number | null>(null);
@@ -87,4 +87,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default Converter;
