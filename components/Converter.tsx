@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { ChangeEvent, FC, useEffect, useState } from "react";
+import CurrentPrice from "./CurrentPrice";
+import PriceUpdate from "./PriceUpdate";
 
 const Converter: FC = () => {
   const [fiatAmount, setFiatAmount] = useState<string>("");
@@ -50,15 +52,12 @@ const Converter: FC = () => {
       </h1>
       <h6 className="mb-8 p-8 text-center text-2xl italic text-blue-500">Your simple Fiat to Satoshi Converter</h6>
       <section className="flex w-11/12 flex-col items-center rounded border border-blue-400 bg-white shadow-md md:w-auto">
-        {/* price pill */}
-        <article className="mx-5 flex w-full justify-start px-2">
-          <p className="z-10 -my-5 rounded-full bg-blue-500 p-2 text-sm text-white">{formattedPrice} € / BTC</p>
-        </article>
+        <CurrentPrice formattedPrice={formattedPrice} />
         {/* input 1 */}
         <article className="flex w-full justify-center rounded-t-xl p-10">
           <input
             id="input-fiat"
-            className="w-11/12 border-b border-blue-500 p-2 font-mono outline-none focus:shadow-[0_1px_0px_0px_rgba(59,130,246,1)]"
+            className="input-underscore"
             type="text"
             inputMode="decimal"
             value={fiatAmount}
@@ -72,7 +71,7 @@ const Converter: FC = () => {
         <article className="flex w-full justify-center rounded-b-xl p-10">
           <input
             id="input-sat"
-            className="w-11/12 border-b border-blue-500 p-2 font-mono outline-none focus:shadow-[0_1px_0px_0px_rgba(59,130,246,1)]"
+            className="input-underscore"
             type="text"
             inputMode="decimal"
             value={satAmount}
@@ -83,6 +82,7 @@ const Converter: FC = () => {
           </label>
         </article>
       </section>
+      <PriceUpdate />
     </main>
   );
 };
