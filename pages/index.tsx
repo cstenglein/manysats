@@ -10,6 +10,7 @@ const Home: NextPage = () => {
         <title>ManySats</title>
         <meta name="description" content="Fiat to Satoshi Converter" />
         <link rel="icon" href="/favicon.ico" />
+        <link rel="manifest" href="/manifest.json" />
       </Head>
       <Converter />
       <Footer />
