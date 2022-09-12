@@ -1,3 +1,4 @@
+import { ArrowLeftIcon, UserCircleIcon } from "@heroicons/react/20/solid";
 import { NextPage } from "next";
 import Link from "next/link";
 
@@ -16,12 +17,18 @@ const Legal: NextPage = () => {
       <h1 className="mb-2 flex items-center justify-center p-4 text-4xl">Legal</h1>
 
       <section className="flex h-screen flex-col gap-4 pt-10">
-        <button className="rounded bg-blue-500 p-2 text-white" onClick={onClickHandler}>
-          Show Contact Details
+        <button
+          className="flex items-center justify-center rounded bg-blue-500 p-2 text-white"
+          onClick={onClickHandler}
+        >
+          <UserCircleIcon className="mr-1 inline h-5 w-5" />
+          <span>Show Contact Details</span>
         </button>
 
         <Link href="/">
-          <button className="rounded-t bg-blue-500 p-2 text-white">Back to Home</button>
+          <button className="flex items-center justify-center rounded-t bg-blue-500 p-2 text-white">
+            <ArrowLeftIcon className="mr-1 inline h-5 w-5" /> <span>Back to Home</span>
+          </button>
         </Link>
       </section>
     </main>

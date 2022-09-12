@@ -1,5 +1,6 @@
 import { NextPage } from "next";
 import Link from "next/link";
+import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 
 const ADDRESS = `Christoph Stenglein
 Thalmannsbach 15
@@ -19,7 +20,9 @@ const FAQ: NextPage = () => {
         <p>FAQ is not yet finished :) Please come back later</p>
 
         <Link href="/">
-          <button className="rounded-t bg-blue-500 p-2 text-white">Back to Home</button>
+          <button className="rounded-t bg-blue-500 p-2 text-white">
+            <ArrowLeftIcon className="inline h-5 w-5" /> Back to Home
+          </button>
         </Link>
       </section>
     </main>
