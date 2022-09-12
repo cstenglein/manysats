@@ -7,6 +7,7 @@ const Converter: FC = () => {
   const [fiatAmount, setFiatAmount] = useState<string>("");
   const [satAmount, setSatAmount] = useState<string>("");
   const [price, setPrice] = useState<number | null>(null);
+  const [date, setDate] = useState<string | null>(null);
   const [formattedPrice, setFormattedPrice] = useState<string>("");
 
   const onChangeFiatHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -34,13 +35,14 @@ const Converter: FC = () => {
   useEffect(() => {
     fetch("/api/price")
       .then((res) => res.json())
-      .then((data: number) => {
-        setPrice(data);
+      .then((data: { price: number; date: string }) => {
+        setPrice(data.price);
+        setDate(data.date);
         setFormattedPrice(
           new Intl.NumberFormat("en-US", {
             minimumFractionDigits: 2,
             currency: "EUR",
-          }).format(data)
+          }).format(data.price)
         );
       });
   }, []);
@@ -82,7 +84,7 @@ const Converter: FC = () => {
           </label>
         </article>
       </section>
-      <PriceUpdate />
+      <PriceUpdate date={date} />
     </main>
   );
 };
