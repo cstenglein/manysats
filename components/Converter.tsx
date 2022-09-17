@@ -33,6 +33,10 @@ const Converter: FC = () => {
   };
 
   useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
     fetch("/api/price")
       .then((res) => res.json())
       .then((data: { price: number; date: string }) => {
@@ -45,7 +49,7 @@ const Converter: FC = () => {
           }).format(data.price)
         );
       });
-  }, []);
+  };
 
   return (
     <main className="flex h-screen flex-col items-center bg-gray-100">
