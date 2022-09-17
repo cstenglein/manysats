@@ -14,7 +14,7 @@ export default async function handler(_: NextApiRequest, res: NextApiResponse<an
   if (!cachedData.price) {
     const data = await fetch("https://api.kraken.com/0/public/Ticker?pair=XBTEUR");
     const json = await data.json();
-    console.log(json);
+
     cachedData.price = +json.result.XXBTZEUR.a[0];
     cachedData.date = new Date().toISOString();
   } else {
