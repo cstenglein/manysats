@@ -11,9 +11,9 @@
   ],
   "id": "/",
   "start_url": "/",
-  "background_color": "#3367D6",
+  "background_color": "#3b82f6",
   "display": "standalone",
   "scope": "/",
-  "theme_color": "#3367D6",
+  "theme_color": "#3b82f6",
   "description": "Fiat to Satoshi Converter"
 }
