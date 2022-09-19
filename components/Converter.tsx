@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ChangeEvent, FC, useEffect, useState } from "react";
+import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import CurrentPrice from "./CurrentPrice";
 import PriceUpdate from "./PriceUpdate";
 
@@ -9,6 +9,7 @@ const Converter: FC = () => {
   const [price, setPrice] = useState<number | null>(null);
   const [date, setDate] = useState<string | null>(null);
   const [formattedPrice, setFormattedPrice] = useState<string>("");
+  const inputFiat = useRef<HTMLInputElement | null>(null);
 
   const onChangeFiatHandler = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -34,6 +35,10 @@ const Converter: FC = () => {
 
   useEffect(() => {
     fetchData();
+
+    if (inputFiat.current) {
+      inputFiat.current.focus();
+    }
   }, []);
 
   const fetchData = () => {
@@ -52,9 +57,10 @@ const Converter: FC = () => {
   };
 
   return (
-    <main className="flex h-screen flex-col items-center bg-gray-100">
+    <main className="flex flex-col items-center">
       <h1 className="mb-2 flex items-center justify-center p-4 text-4xl">
-        <Image src={"/btc-icon.svg"} height="40px" alt="btcicon" width="40px" /> <span className="ml-2">ManySats</span>
+        <Image src={"/btc-icon.svg"} height="40px" alt="btcicon" width="40px" />
+        <span className="ml-2">ManySats</span>
       </h1>
       <h6 className="mb-8 p-8 text-center text-2xl italic text-blue-500">Your simple Fiat to Satoshi Converter</h6>
       <section className="flex w-11/12 flex-col items-center rounded border border-blue-400 bg-white shadow-md md:w-auto">
@@ -62,6 +68,7 @@ const Converter: FC = () => {
         {/* input 1 */}
         <article className="flex w-full justify-center rounded-t-xl p-10">
           <input
+            ref={inputFiat}
             id="input-fiat"
             className="input-underscore"
             type="text"
