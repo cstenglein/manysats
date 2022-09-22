@@ -16,7 +16,7 @@ const PriceUpdate: FC<Props> = ({ date }) => {
       <p className="p-2">
         Price Data from the{" "}
         <Link href="https://docs.kraken.com/rest/">
-          <span className="underline">Kraken REST API</span>
+          <span className="cursor-pointer underline">Kraken REST API</span>
         </Link>
       </p>
     </article>
