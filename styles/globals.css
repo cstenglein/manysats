@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  @apply h-full bg-gray-100;
+}
+
 .input-underscore {
   @apply w-11/12 border-b border-blue-500 p-2 font-mono outline-none focus:shadow-[0_1px_0px_0px_rgba(59,130,246,1)];
 }

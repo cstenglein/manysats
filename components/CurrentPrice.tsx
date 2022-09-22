@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 type Props = {
-  formattedPrice: string;
+  formattedPrice: string | null;
 };
 
 const CurrentPrice: FC<Props> = ({ formattedPrice }) => {
