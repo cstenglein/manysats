@@ -1,9 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-
-type PriceData = {
-  price: number | null;
-  date: Date | null;
-};
+import { PriceData, TickerResponse } from "../../models/pricedata";
 
 let cachedData: PriceData = {
   price: null,
@@ -12,17 +8,24 @@ let cachedData: PriceData = {
 
 const CACHE_MS = 180_000;
 
+const BASE_URL = "https://api.kraken.com/0/public/Ticker?pair=XBTEUR";
+
 export default async function handler(_: NextApiRequest, res: NextApiResponse<any>) {
   if (!cachedData.date || new Date().getTime() - cachedData.date?.getTime() > CACHE_MS) {
-    console.info("fetch data");
-    const data = await fetch("https://api.kraken.com/0/public/Ticker?pair=XBTEUR");
-    const json = await data.json();
-
-    cachedData.price = +json.result.XXBTZEUR.a[0];
-    cachedData.date = new Date();
-  } else {
-    console.info("use cached data");
+    await fetchPrice();
   }
 
   res.status(200).json(cachedData);
+}
+
+async function fetchPrice() {
+  try {
+    const resp = await fetch(BASE_URL);
+    const data: TickerResponse = await resp.json();
+
+    cachedData.price = +data.result.XXBTZEUR.a[0];
+    cachedData.date = new Date();
+  } catch (error) {
+    console.error(error);
+  }
 }
