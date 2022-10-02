@@ -37,6 +37,8 @@ const Home: NextPage = () => {
         <meta name="description" content="Your simple Fiat to Satoshi Converter" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
+        <meta name="theme-color" content="#3b82f6" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
       </Head>
       <Title />
