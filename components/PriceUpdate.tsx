@@ -12,7 +12,7 @@ const PriceUpdate: FC<Props> = ({ date }) => {
   const formattedDate = date ? new Date(date).toLocaleString(window.navigator.language) : null;
 
   return (
-    <article className="pt-6 text-center text-sm text-blue-500">
+    <article className="pt-6 text-center text-sm text-blue-600">
       {formattedDate && <p className="p-2">Price from {formattedDate}</p>}
       {!formattedDate && <p className="p-2">Date not available</p>}
       {/* <p className="p-2">Next Update in {secRemaining}s</p> */}

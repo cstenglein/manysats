@@ -18,7 +18,7 @@ const Legal: NextPage = () => {
 
       <section className="flex h-screen flex-col gap-4 pt-10">
         <button
-          className="flex items-center justify-center rounded bg-blue-500 p-2 text-white"
+          className="flex items-center justify-center rounded bg-blue-600 p-2 text-white"
           onClick={onClickHandler}
         >
           <UserCircleIcon className="mr-1 inline h-5 w-5" />
@@ -26,7 +26,7 @@ const Legal: NextPage = () => {
         </button>
 
         <Link href="/">
-          <button className="flex items-center justify-center rounded-t bg-blue-500 p-2 text-white">
+          <button className="flex items-center justify-center rounded-t bg-blue-600 p-2 text-white">
             <ArrowLeftIcon className="mr-1 inline h-5 w-5" /> <span>Back to Home</span>
           </button>
         </Link>

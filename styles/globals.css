@@ -7,5 +7,5 @@ body {
 }
 
 .input-underscore {
-  @apply w-11/12 border-b border-blue-500 p-2 font-mono outline-none focus:shadow-[0_1px_0px_0px_rgba(59,130,246,1)];
+  @apply w-11/12 border-b border-blue-600 p-2 font-mono outline-none focus:shadow-[0_1px_0px_0px_rgba(59,130,246,1)];
 }

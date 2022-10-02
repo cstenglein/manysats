@@ -20,7 +20,7 @@ const FAQ: NextPage = () => {
         <p>FAQ is not yet finished :) Please come back later</p>
 
         <Link href="/">
-          <button className="rounded-t bg-blue-500 p-2 text-white">
+          <button className="rounded-t bg-blue-600 p-2 text-white">
             <ArrowLeftIcon className="inline h-5 w-5" /> Back to Home
           </button>
         </Link>

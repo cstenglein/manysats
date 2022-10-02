@@ -8,7 +8,7 @@ const Title: FC = () => {
         <Image src={"/btc-icon.svg"} height={40} alt="Bitcoin Icon" width={40} />
         <span className="ml-2">ManySats</span>
       </h1>
-      <h2 className="mb-8 p-8 text-center text-2xl italic text-blue-500">Your simple Fiat to Satoshi Converter</h2>
+      <h2 className="mb-8 p-8 text-center text-2xl italic text-blue-600">Your simple Fiat to Satoshi Converter</h2>
     </>
   );
 };
