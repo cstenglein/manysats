@@ -33,7 +33,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>ManySats</title>
+        <title>ManySats - Your simple Fiat to Satoshi Converter</title>
         <meta name="description" content="Your simple Fiat to Satoshi Converter" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
