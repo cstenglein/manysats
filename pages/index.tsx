@@ -15,19 +15,22 @@ const Home: NextPage = () => {
     fetchData();
   }, []);
 
-  const fetchData = () => {
-    fetch("/api/price")
-      .then((res) => res.json())
-      .then((data: { price: number; date: string }) => {
-        setPrice(data.price);
-        setDate(data.date);
-        setFormattedPrice(
-          new Intl.NumberFormat("en-US", {
-            minimumFractionDigits: 2,
-            currency: "EUR",
-          }).format(data.price)
-        );
-      });
+  const fetchData = async () => {
+    const res = await fetch("/api/price");
+    const data: { price: number; date: string } = await res.json();
+
+    setPrice(data.price);
+    setDate(data.date);
+    setFormattedPrice(
+      new Intl.NumberFormat("en-US", {
+        minimumFractionDigits: 2,
+        currency: "EUR",
+      }).format(data.price)
+    );
+  };
+
+  const onRefresh = async () => {
+    await fetchData();
   };
 
   return (
@@ -43,7 +46,7 @@ const Home: NextPage = () => {
       </Head>
       <Title />
       <main className="flex flex-col items-center">
-        <Converter price={price} formattedPrice={formattedPrice} />
+        <Converter price={price} formattedPrice={formattedPrice} onRefresh={onRefresh} />
         <PriceUpdate date={date} />
       </main>
       <Footer />

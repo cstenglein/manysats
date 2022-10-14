@@ -1,12 +1,14 @@
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import CurrentPrice from "./CurrentPrice";
+import RefreshBtn from "./RefreshBtn";
 
 type Props = {
   price: number | null;
   formattedPrice: string | null;
+  onRefresh: () => void;
 };
 
-const Converter: FC<Props> = ({ price, formattedPrice }) => {
+const Converter: FC<Props> = ({ price, formattedPrice, onRefresh }) => {
   const [fiatAmount, setFiatAmount] = useState<string>("");
   const [satAmount, setSatAmount] = useState<string>("");
   const inputFiat = useRef<HTMLInputElement | null>(null);
@@ -42,6 +44,7 @@ const Converter: FC<Props> = ({ price, formattedPrice }) => {
   return (
     <section className="flex w-11/12 flex-col items-center rounded border border-blue-400 bg-white shadow-md md:w-auto">
       <CurrentPrice formattedPrice={formattedPrice} />
+      <RefreshBtn onRefresh={onRefresh} />
       {/* input 1 */}
       <article className="flex w-full justify-center rounded-t-xl p-10">
         <input
