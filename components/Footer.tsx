@@ -7,8 +7,8 @@ const Footer: FC = () => {
       {/* <Link href="/faq">
         <button className="cursor-pointer rounded bg-blue-600 p-2 text-white">FAQ</button>
       </Link> */}
-      <Link href="/legal">
-        <button className="cursor-pointer rounded bg-blue-600 p-2 text-white">Legal</button>
+      <Link href="/imprint">
+        <button className="cursor-pointer rounded bg-blue-600 p-2 text-white">Imprint</button>
       </Link>
     </footer>
   );
