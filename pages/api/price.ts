@@ -6,7 +6,7 @@ let cachedData: PriceData = {
   date: null,
 };
 
-const CACHE_MS = 180_000;
+const CACHE_MS = 60_000;
 
 const BASE_URL = "https://api.kraken.com/0/public/Ticker?pair=XBTEUR";
 
