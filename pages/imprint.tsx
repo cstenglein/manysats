@@ -25,7 +25,7 @@ const Legal: NextPage = () => {
         <link rel="manifest" href="/manifest.json" />
       </Head>
       <main className="flex h-screen flex-col items-center bg-gray-100">
-        <h1 className="mb-2 flex items-center justify-center p-4 text-4xl">Legal</h1>
+        <h1 className="mb-2 flex items-center justify-center p-4 text-4xl">Imprint</h1>
 
         <section className="flex h-screen flex-col gap-4 pt-10">
           <button
