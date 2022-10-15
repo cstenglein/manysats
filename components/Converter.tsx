@@ -1,4 +1,5 @@
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
+import { getSeparator } from "../utils/utils";
 import CurrentPrice from "./CurrentPrice";
 import RefreshBtn from "./RefreshBtn";
 
@@ -11,27 +12,39 @@ type Props = {
 const Converter: FC<Props> = ({ price, formattedPrice, onRefresh }) => {
   const [fiatAmount, setFiatAmount] = useState<string>("");
   const [satAmount, setSatAmount] = useState<string>("");
+  const [decimalSep, setDecimalSep] = useState<string>("");
   const inputFiat = useRef<HTMLInputElement | null>(null);
 
   const onChangeFiatHandler = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const input = event.target.value.replace(/[^0-9.]/g, "");
-    const formattedInput = input.endsWith(".") ? input : new Intl.NumberFormat("en-US").format(+input);
+    const FORMATTER = Intl.NumberFormat(window.navigator.language);
+    const REGEX = new RegExp(`[^0-9${decimalSep}]`, "g");
+    let input = event.target.value.replace(REGEX, "");
+    if (input.indexOf(".") > 0) {
+      input = input.slice(0, input.indexOf(".") + 3);
+    }
+    const formattedInput = input.endsWith(decimalSep)
+      ? FORMATTER.format(parseFloat(input)) + decimalSep
+      : FORMATTER.format(+input.replace(decimalSep, "."));
     setFiatAmount(formattedInput);
     // format output
-    const converted = ((+input / price!) * 100_000_000).toFixed(0);
-    const formatted = new Intl.NumberFormat("en-US").format(+converted);
+    const converted = ((parseFloat(input) / price!) * 100_000_000).toFixed(0);
+    const formatted = FORMATTER.format(+converted);
     setSatAmount(formatted);
   };
 
   const onChangeSatHandler = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const input = event.target.value.replace(/[^0-9.]/g, "");
-    const formattedInput = input.endsWith(".") ? input : new Intl.NumberFormat("en-US").format(+input);
+    const FORMATTER = Intl.NumberFormat(window.navigator.language);
+    const REGEX = new RegExp(`[^0-9]`, "g");
+    const input = event.target.value.replace(REGEX, "");
+    const formattedInput = input.endsWith(decimalSep)
+      ? FORMATTER.format(parseFloat(input)) + decimalSep
+      : FORMATTER.format(+input.replace(decimalSep, "."));
     setSatAmount(formattedInput);
     // format output
-    const converted = ((+input * price!) / 100_000_000).toFixed(2);
-    const formatted = new Intl.NumberFormat("en-US").format(+converted);
+    const converted = ((parseFloat(input) * price!) / 100_000_000).toFixed(2);
+    const formatted = FORMATTER.format(+converted);
     setFiatAmount(formatted);
   };
 
@@ -39,6 +52,7 @@ const Converter: FC<Props> = ({ price, formattedPrice, onRefresh }) => {
     if (inputFiat.current) {
       inputFiat.current.focus();
     }
+    setDecimalSep(getSeparator(window.navigator.language, "decimal"));
   }, []);
 
   return (

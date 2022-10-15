@@ -22,7 +22,7 @@ const Home: NextPage = () => {
     setPrice(data.price);
     setDate(data.date);
     setFormattedPrice(
-      new Intl.NumberFormat("en-US", {
+      new Intl.NumberFormat(window.navigator.language, {
         minimumFractionDigits: 2,
         currency: "EUR",
       }).format(data.price)
