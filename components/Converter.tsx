@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
-import { getSeparator } from "../utils/utils";
+import { getFormatter, getSeparator } from "../utils/utils";
 import CurrentPrice from "./CurrentPrice";
 import RefreshBtn from "./RefreshBtn";
 
@@ -17,33 +17,42 @@ const Converter: FC<Props> = ({ price, formattedPrice, onRefresh }) => {
 
   const onChangeFiatHandler = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const FORMATTER = Intl.NumberFormat(window.navigator.language);
-    const REGEX = new RegExp(`[^0-9${decimalSep}]`, "g");
-    let input = event.target.value.replace(REGEX, "");
-    if (input.indexOf(".") > 0) {
-      input = input.slice(0, input.indexOf(".") + 3);
+    const FORMATTER = getFormatter(window.navigator.language);
+    const regex = new RegExp(`[^0-9${decimalSep}]`, "g");
+
+    let input = event.target.value.replace(regex, "");
+
+    // cut off third decimal place
+    if (input.indexOf(decimalSep) > 0) {
+      input = input.slice(0, input.indexOf(decimalSep) + 3);
     }
+
+    let floatInput = parseFloat(input.replace(decimalSep, ".")) || 0;
+
+    // format input
+    // if input contains a separator (e.g. "200.") then format and add separator again for further input
     const formattedInput = input.endsWith(decimalSep)
-      ? FORMATTER.format(parseFloat(input)) + decimalSep
-      : FORMATTER.format(+input.replace(decimalSep, "."));
+      ? `${FORMATTER.format(floatInput)}${decimalSep}`
+      : FORMATTER.format(floatInput);
     setFiatAmount(formattedInput);
+
     // format output
-    const converted = ((parseFloat(input) / price!) * 100_000_000).toFixed(0);
+    const converted = ((floatInput / price!) * 100_000_000).toFixed(0);
     const formatted = FORMATTER.format(+converted);
     setSatAmount(formatted);
   };
 
   const onChangeSatHandler = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const FORMATTER = Intl.NumberFormat(window.navigator.language);
-    const REGEX = new RegExp(`[^0-9]`, "g");
-    const input = event.target.value.replace(REGEX, "");
-    const formattedInput = input.endsWith(decimalSep)
-      ? FORMATTER.format(parseFloat(input)) + decimalSep
-      : FORMATTER.format(+input.replace(decimalSep, "."));
+    const FORMATTER = getFormatter(window.navigator.language);
+
+    // format input
+    const input = parseFloat(event.target.value.replace(/[^0-9]/g, "")) || 0;
+    const formattedInput = FORMATTER.format(input);
     setSatAmount(formattedInput);
+
     // format output
-    const converted = ((parseFloat(input) * price!) / 100_000_000).toFixed(2);
+    const converted = ((input * price!) / 100_000_000).toFixed(2);
     const formatted = FORMATTER.format(+converted);
     setFiatAmount(formatted);
   };
