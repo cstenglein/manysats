@@ -39,8 +39,13 @@ const Home: NextPage = () => {
         <title>ManySats - Your simple Fiat to Satoshi Converter</title>
         <meta name="description" content="Your simple Fiat to Satoshi Converter" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
         <meta name="theme-color" content="#3b82f6" />
+        {/* OG Image */}
+        <meta name="og:title" content="ManySats" />
+        <meta name="og:description" content="Your simple Fiat to Satoshi Converter" />
+        <meta name="og:image" content="https://manysats.com/api/og" />
+
+        <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
       </Head>
