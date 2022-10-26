@@ -10,7 +10,7 @@ const CACHE_MS = 60_000;
 
 const BASE_URL = "https://api.kraken.com/0/public/Ticker?pair=XBTEUR";
 
-export default async function handler(_: NextApiRequest, res: NextApiResponse<any>) {
+export default async function handler(_: NextApiRequest, res: NextApiResponse<PriceData>) {
   if (!cachedData.date || new Date().getTime() - cachedData.date?.getTime() > CACHE_MS) {
     await fetchPrice();
   }
