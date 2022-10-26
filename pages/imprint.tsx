@@ -41,11 +41,11 @@ const Legal: NextPage = () => {
             <span>Show Contact Details</span>
           </button>
 
-          <Link href="/">
-            <button className="flex items-center justify-center rounded-t bg-blue-600 p-2 text-white">
+          <button className="flex items-center justify-center rounded-t bg-blue-600 p-2 text-white">
+            <Link href="/">
               <ArrowLeftIcon className="mr-1 inline h-5 w-5" /> <span>Back to Home</span>
-            </button>
-          </Link>
+            </Link>
+          </button>
         </section>
       </main>
     </>
