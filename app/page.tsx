@@ -1,4 +1,5 @@
 "use client";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import Converter from "../components/Converter";
 import Footer from "../components/Footer";
@@ -34,9 +35,9 @@ export default function Home() {
 
   return (
     <>
-      <head>
+      <Head>
         <title>ManySats - Your simple Fiat to Satoshi Converter</title>
-      </head>
+      </Head>
       <Title />
       <main className="flex flex-col items-center">
         <Converter price={price} formattedPrice={formattedPrice} onRefresh={onRefresh} />

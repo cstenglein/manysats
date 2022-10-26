@@ -15,10 +15,10 @@ export default function Legal() {
 
   return (
     <>
-      <head>
+      <Head>
         <title>ManySats - Imprint</title>
         <meta name="description" content="Manysats - Imprint" />
-      </head>
+      </Head>
       <main className="flex h-screen flex-col items-center bg-gray-100">
         <h1 className="mb-2 flex items-center justify-center p-4 text-4xl">Imprint</h1>
 
