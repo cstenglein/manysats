@@ -1,0 +1,17 @@
+name: Build & Push Docker image
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag ghcr.io/cstenglein/manysats:latest
+      - name: Login to Container
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+      - name: Push the Docker image
+        run: docker push ghcr.io/cstenglein/manysats:latest
