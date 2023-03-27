@@ -1,10 +1,21 @@
-let FORMATTER: Intl.NumberFormat | null = null;
+import { Unit } from "../components/Converter";
 
-export function getFormatter(locale: string): Intl.NumberFormat {
-  if (!FORMATTER || FORMATTER.resolvedOptions().locale !== locale) {
-    FORMATTER = new Intl.NumberFormat(locale);
+let SAT_FORMAT: Intl.NumberFormat | null = null;
+let BTC_FORMAT: Intl.NumberFormat | null = null;
+
+export function getFormatter(locale: string, selectedUnit: Unit): Intl.NumberFormat {
+  switch (+selectedUnit as Unit) {
+    case Unit.SAT:
+      if (!SAT_FORMAT || SAT_FORMAT.resolvedOptions().locale !== locale) {
+        SAT_FORMAT = new Intl.NumberFormat(locale);
+      }
+      return SAT_FORMAT;
+    case Unit.BTC:
+      if (!BTC_FORMAT || BTC_FORMAT.resolvedOptions().locale !== locale) {
+        BTC_FORMAT = new Intl.NumberFormat(locale, { minimumFractionDigits: 8 });
+      }
+      return BTC_FORMAT;
   }
-  return FORMATTER;
 }
 
 export function getSeparator(locale: string, separatorType: "decimal" | "group"): string {
