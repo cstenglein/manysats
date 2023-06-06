@@ -1,16 +1,12 @@
 import { ArrowLeftIcon, UserCircleIcon } from "@heroicons/react/20/solid";
-import { NextPage } from "next";
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 
-const ADDRESS = `Christoph Stenglein
-Thalmannsbach 15
-4771 Sigharting
-manysats@cstenglein.com`;
-
-const Legal: NextPage = () => {
+const Legal: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const onClickHandler = () => {
-    alert(ADDRESS);
+    console.log(props.contact);
+    alert(props.contact);
   };
 
   return (
@@ -52,4 +48,7 @@ const Legal: NextPage = () => {
   );
 };
 
+export const getServerSideProps: GetServerSideProps = async () => {
+  return { props: { contact: process.env.CONTACT_DETAILS || null } };
+};
 export default Legal;
