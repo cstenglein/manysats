@@ -5,7 +5,6 @@ import Link from "next/link";
 
 const Legal: NextPage = (props: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const onClickHandler = () => {
-    console.log(props.contact);
     alert(props.contact);
   };
 
