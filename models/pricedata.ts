@@ -1,6 +1,15 @@
 export type PriceData = {
-  price: number | null;
   date: Date | null;
+  pairs: {
+    // Bitcoin to Euro
+    XXBTZEUR: number | null;
+    // Bitcoin to GBP
+    XXBTZGBP: number | null;
+    // Bitcoin to USD
+    XXBTZUSD: number | null;
+    // Bitcoin to JPY
+    XXBTZJPY: number | null;
+  };
 };
 
 type Pairs = {
