@@ -1,33 +1,31 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Converter from "../components/Converter";
 import Footer from "../components/Footer";
 import PriceUpdate from "../components/PriceUpdate";
 import Title from "../components/Title";
+import { PriceData } from "../models/pricedata";
+
+export enum PriceOptions {
+  EUR = "EUR",
+  GBP = "GBP",
+  JPY = "JPY",
+  USD = "USD",
+}
 
 const Home: NextPage = () => {
-  const [price, setPrice] = useState<number | null>(null);
-  const [date, setDate] = useState<string | null>(null);
-  const [formattedPrice, setFormattedPrice] = useState<string>("");
+  const [priceData, setPriceData] = useState<PriceData | null>(null);
+
+  const fetchData = useCallback(async () => {
+    const res = await fetch("/api/price");
+    const data: PriceData = await res.json();
+    setPriceData(data);
+  }, []);
 
   useEffect(() => {
     fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    const res = await fetch("/api/price");
-    const data: { price: number; date: string } = await res.json();
-
-    setPrice(data.price);
-    setDate(data.date);
-    setFormattedPrice(
-      new Intl.NumberFormat(window.navigator.language, {
-        minimumFractionDigits: 2,
-        currency: "EUR",
-      }).format(data.price)
-    );
-  };
+  }, [fetchData]);
 
   const onRefresh = async () => {
     await fetchData();
@@ -61,8 +59,8 @@ const Home: NextPage = () => {
       </Head>
       <Title />
       <main className="flex flex-col items-center">
-        <Converter price={price} formattedPrice={formattedPrice} onRefresh={onRefresh} />
-        <PriceUpdate date={date} />
+        <Converter priceData={priceData} onRefresh={onRefresh} />
+        <PriceUpdate date={priceData?.date?.toString()} />
       </main>
       <Footer />
     </>

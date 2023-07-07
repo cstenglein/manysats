@@ -2,7 +2,7 @@ import Link from "next/link";
 import { FC } from "react";
 
 type Props = {
-  date: string | null;
+  date: string | null | undefined;
 };
 
 const PriceUpdate: FC<Props> = ({ date }) => {

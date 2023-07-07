@@ -1,5 +1,5 @@
 export type PriceData = {
-  date: Date | null;
+  date: string | null;
   pairs: {
     // Bitcoin to Euro
     XXBTZEUR: number | null;

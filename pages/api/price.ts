@@ -17,7 +17,7 @@ const CACHE_MS = 60_000;
 const BASE_URL = "https://api.kraken.com/0/public/Ticker";
 
 export default async function handler(_: NextApiRequest, res: NextApiResponse<PriceData>) {
-  if (!cachedData.date || new Date().getTime() - cachedData.date?.getTime() > CACHE_MS) {
+  if (!cachedData.date || new Date().getTime() - new Date(cachedData.date).getTime() > CACHE_MS) {
     await fetchPrice();
   }
 
@@ -33,7 +33,7 @@ async function fetchPrice() {
     cachedData.pairs.XXBTZGBP = +data.result.XXBTZGBP.a[0];
     cachedData.pairs.XXBTZJPY = +data.result.XXBTZJPY.a[0];
     cachedData.pairs.XXBTZUSD = +data.result.XXBTZUSD.a[0];
-    cachedData.date = new Date();
+    cachedData.date = new Date().toISOString();
   } catch (error) {
     console.error(error);
   }
