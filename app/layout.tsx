@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 import "../styles/globals.css";
 
-import type { Viewport } from 'next';
+import type { Viewport } from "next";
 
 export const viewport: Viewport = {
-  themeColor: '#3b82f6',
-}
+  themeColor: "#3b82f6",
+};
 
 export const metadata: Metadata = {
   title: "ManySats - Your simple Fiat to Satoshi Converter",

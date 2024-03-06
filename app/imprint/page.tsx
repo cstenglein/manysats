@@ -16,7 +16,8 @@ export default function Imprint() {
         <ContactButton contact={process.env.CONTACT_DETAILS} />
         <button className="flex items-center justify-center rounded-t bg-blue-600 p-2 text-white">
           <Link href="/">
-            <ArrowLeftIcon className="mr-1 inline h-5 w-5" /> <span>Back to Home</span>
+            <ArrowLeftIcon className="mr-1 inline h-5 w-5" />
+            Back to Home
           </Link>
         </button>
       </section>
