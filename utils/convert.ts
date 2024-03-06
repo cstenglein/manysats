@@ -1,27 +1,27 @@
-import { Unit } from "@/components/Converter";
-
-export function convertFiatToBtc(floatInput: number, price: number, selectedUnit: Unit) {
-  let converted: string;
-  switch (+selectedUnit as Unit) {
-    case Unit.SAT:
-      converted = ((floatInput / price) * 100_000_000).toFixed(0);
-      break;
-    case Unit.BTC:
-      converted = (floatInput / price).toFixed(8);
-      break;
-  }
-  return converted;
+export function convertSatToBtc(satInput: string): string {
+  return (+satInput.replace(/,/g, "") / 100_000_000).toFixed(8);
 }
 
-export function convertBtcToFiat(btcInput: number, price: number, selectedUnit: Unit) {
-  let converted: string;
-  switch (+selectedUnit as Unit) {
-    case Unit.SAT:
-      converted = ((btcInput * price) / 100_000_000).toFixed(2);
-      break;
-    case Unit.BTC:
-      converted = (btcInput * price).toFixed(2);
-      break;
-  }
-  return converted;
+export function convertBtcToSat(btcInput: string): string {
+  return (+btcInput.replace(/,/g, "") * 100_000_000).toFixed(0);
+}
+
+export function convertFiatToBtc(fiatAmount: string, price: number): string {
+  const floatInput = +fiatAmount.replace(/,/g, "");
+  return (floatInput / price).toFixed(8);
+}
+
+export function convertFiatToSat(fiatAmount: string, price: number): string {
+  const floatInput = +fiatAmount.replace(/,/g, "");
+  return ((floatInput / price) * 100_000_000).toFixed(0);
+}
+
+export function convertBtcToFiat(btcInput: string, price: number): string {
+  const btcAmount = +btcInput.replace(/,/g, "");
+  return (btcAmount * price).toFixed(2);
+}
+
+export function convertSatToFiat(satInput: string, price: number): string {
+  const satAmount = +satInput.replace(/,/g, "");
+  return ((satAmount / 100_000_000) * price).toFixed(2);
 }

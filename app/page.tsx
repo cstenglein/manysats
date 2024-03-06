@@ -1,36 +1,17 @@
-"use client";
 import Converter from "@/components/Converter";
-import Footer from "@/components/Footer";
-import PriceUpdate from "@/components/PriceUpdate";
 import Title from "@/components/Title";
-import { PriceData } from "@/models/pricedata";
-import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function Home() {
-  const [priceData, setPriceData] = useState<PriceData | null>(null);
-
-  const fetchData = useCallback(async () => {
-    const res = await fetch("/api/price");
-    const data: PriceData = await res.json();
-    setPriceData(data);
-  }, []);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  const onRefresh = async () => {
-    await fetchData();
-  };
-
   return (
     <>
       <Title />
       <main className="flex flex-col items-center">
-        <Converter priceData={priceData} onRefresh={onRefresh} />
-        <PriceUpdate date={priceData?.date?.toString()} />
+        <Converter />
       </main>
-      <Footer />
+      <Link href="/imprint" className="mt-5 flex w-full justify-center gap-2 text-sm">
+        <button className="cursor-pointer rounded bg-blue-600 p-2 text-white">Imprint</button>
+      </Link>
     </>
   );
 }

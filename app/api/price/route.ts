@@ -1,41 +1,30 @@
-export const dynamic = "force-dynamic";
+import { TickerResponse } from "@/models/pricedata";
 
-import { PriceData, TickerResponse } from "@/models/pricedata";
-
-let cachedData: PriceData = {
-  pairs: {
-    XXBTZEUR: null,
-    XXBTZGBP: null,
-    XXBTZJPY: null,
-    XXBTZUSD: null,
-  },
-  date: null,
-};
-
-const CACHE_MS = 60_000;
+// update price every 60 seconds
+export const revalidate = 60;
+export const runtime = "edge";
 
 // Get all trading pairs
-const BASE_URL = "https://api.kraken.com/0/public/Ticker";
-
-async function fetchPrice() {
-  try {
-    const resp = await fetch(BASE_URL);
-    const data: TickerResponse = await resp.json();
-
-    cachedData.pairs.XXBTZEUR = +data.result.XXBTZEUR.a[0];
-    cachedData.pairs.XXBTZGBP = +data.result.XXBTZGBP.a[0];
-    cachedData.pairs.XXBTZJPY = +data.result.XXBTZJPY.a[0];
-    cachedData.pairs.XXBTZUSD = +data.result.XXBTZUSD.a[0];
-    cachedData.date = new Date().toISOString();
-  } catch (error) {
-    console.error(error);
-  }
-}
+const KRAKEN_TICKER_URL = "https://api.kraken.com/0/public/Ticker";
 
 export async function GET(_: Request) {
-  if (!cachedData.date || new Date().getTime() - new Date(cachedData.date).getTime() > CACHE_MS) {
-    await fetchPrice();
-  }
+  try {
+    const resp = await fetch(KRAKEN_TICKER_URL, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data: TickerResponse = await resp.json();
 
-  return Response.json(cachedData);
+    return Response.json({
+      EUR: +data.result.XXBTZEUR.a[0],
+      GBP: +data.result.XXBTZGBP.a[0],
+      JPY: +data.result.XXBTZJPY.a[0],
+      USD: +data.result.XXBTZUSD.a[0],
+      date: new Date().toISOString(),
+    });
+  } catch (e) {
+    console.error("Failed to fetch price data", e);
+    return Response.error();
+  }
 }
