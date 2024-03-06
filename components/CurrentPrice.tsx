@@ -1,5 +1,11 @@
 import { FC } from "react";
-import { PriceOptions } from "../pages";
+
+export enum PriceOptions {
+  EUR = "EUR",
+  GBP = "GBP",
+  JPY = "JPY",
+  USD = "USD",
+}
 
 type Props = {
   formattedPrice: string | null;

@@ -1,4 +1,4 @@
-import { Unit } from "../components/Converter";
+import { Unit } from "@/components/Converter";
 
 let SAT_FORMAT: Intl.NumberFormat | null = null;
 let BTC_FORMAT: Intl.NumberFormat | null = null;

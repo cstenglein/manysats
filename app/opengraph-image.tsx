@@ -1,10 +1,16 @@
 import { ImageResponse } from "@vercel/og";
 
-export const config = {
-  runtime: "edge",
+export const runtime = "edge";
+
+export const alt = "About ManySats";
+export const size = {
+  width: 1200,
+  height: 600,
 };
 
-export default async function handler() {
+export const contentType = "image/png";
+
+export default async function Image() {
   return new ImageResponse(
     (
       <div tw="h-full w-full flex flex-col justify-center bg-white items-center">
@@ -24,8 +30,7 @@ export default async function handler() {
       </div>
     ),
     {
-      width: 1200,
-      height: 630,
+      ...size,
     }
   );
 }

@@ -1,4 +1,4 @@
-import { Unit } from "../components/Converter";
+import { Unit } from "@/components/Converter";
 
 export function convertFiatToBtc(floatInput: number, price: number, selectedUnit: Unit) {
   let converted: string;

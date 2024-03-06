@@ -1,9 +1,8 @@
 import { ChangeEvent, FC, useCallback, useEffect, useRef, useState } from "react";
 import { NumericFormat } from "react-number-format";
-import { PriceData } from "../models/pricedata";
-import { PriceOptions } from "../pages";
-import { convertBtcToFiat, convertFiatToBtc } from "../utils/convert";
-import CurrentPrice from "./CurrentPrice";
+import { PriceData } from "@/models/pricedata";
+import { convertBtcToFiat, convertFiatToBtc } from "@/utils/convert";
+import CurrentPrice, { PriceOptions } from "./CurrentPrice";
 import RefreshBtn from "./RefreshBtn";
 
 type Props = {
