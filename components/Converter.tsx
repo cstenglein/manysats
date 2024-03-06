@@ -19,6 +19,11 @@ export enum Unit {
   BTC,
 }
 
+async function fetchData(): Promise<PriceData> {
+  const res = await fetch("/api/price");
+  return await res.json();
+}
+
 const Converter: FC = () => {
   const [error, setError] = useState<boolean>(false);
   const [priceData, setPriceData] = useState<PriceData | null>(null);
@@ -30,12 +35,6 @@ const Converter: FC = () => {
   });
   const inputFiat = useRef<HTMLInputElement | null>(null);
   const [selectedCurrency, setSelectedCurrency] = useState<PriceOptions>(PriceOptions.EUR);
-
-  const fetchData = useCallback(async () => {
-    const res = await fetch("/api/price");
-    const data: PriceData = await res.json();
-    return data;
-  }, []);
 
   const validateData = useCallback(
     (data: PriceData) => {
@@ -53,7 +52,7 @@ const Converter: FC = () => {
     if (inputFiat.current) {
       inputFiat.current.focus();
     }
-  }, [fetchData, selectedCurrency, price, validateData]);
+  }, [validateData]);
 
   const onRefresh = async () => {
     setError(false);
