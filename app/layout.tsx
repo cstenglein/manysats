@@ -35,6 +35,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <meta name="lightning" content="christoph@getalby.com" />
       <body>{children}</body>
     </html>
   );
