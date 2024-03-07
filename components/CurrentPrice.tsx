@@ -1,5 +1,4 @@
-"use client";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 
 export enum PriceOptions {
   EUR = "EUR",
@@ -9,7 +8,7 @@ export enum PriceOptions {
 }
 
 type Props = {
-  price: number | null;
+  price: number | undefined;
   selectedCurrency: PriceOptions;
 };
 

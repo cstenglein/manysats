@@ -15,7 +15,7 @@ const PriceUpdate: FC<Props> = ({ date }) => {
   return (
     <article className="pt-6 text-sm text-blue-600">
       {formattedDate && <p className="p-2">Price from {formattedDate}</p>}
-      {!formattedDate && <p className="my-2 w-full bg-gray-400 animate-pulse h-5 rounded-md"></p>}
+      {!formattedDate && <p className="my-2 h-5 w-full animate-pulse rounded-md bg-gray-400"></p>}
       <p className="p-2">
         Price Data from the{" "}
         <Link href="https://docs.kraken.com/rest/">

@@ -25,3 +25,9 @@ export function convertSatToFiat(satInput: string, price: number): string {
   const satAmount = +satInput.replace(/,/g, "");
   return ((satAmount / 100_000_000) * price).toFixed(2);
 }
+
+export function convertFiat(fiatAmount: string, price: number) {
+  const sat = convertFiatToSat(fiatAmount, price);
+  const btc = convertFiatToBtc(fiatAmount, price);
+  return { sat, btc };
+}
