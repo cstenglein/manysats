@@ -1,6 +1,6 @@
 import Converter from "@/components/Converter";
+import Imprint from "@/components/Imprint";
 import Title from "@/components/Title";
-import Link from "next/link";
 import { QRCodeSVG } from "qrcode.react";
 
 export default function Home() {
@@ -8,12 +8,12 @@ export default function Home() {
     <main className="flex flex-col items-center">
       <Title />
       <Converter />
-      <Link href="/imprint" className="mt-5 flex w-full justify-center gap-2 text-sm">
-        <button className="cursor-pointer rounded bg-blue-600 p-2 text-white">Imprint</button>
-      </Link>
-      <p className="p-2 text-blue-600">Lightning Address for tips:</p>
+      <p className="p-2 text-center text-blue-600">
+        If you like to support my work, please consider donating some sats to my lightning address:
+      </p>
       <QRCodeSVG value="christoph@getalby.com" />
-      <span className="text-blue-600 underline">christoph@getalby.com</span>
+      <span className="pt-2 text-blue-600 underline">christoph@getalby.com</span>
+      <Imprint contactDetails={process.env.CONTACT_DETAILS || ""} />
     </main>
   );
 }
