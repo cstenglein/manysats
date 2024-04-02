@@ -1,10 +1,11 @@
 "use client";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 export default function Imprint({ contactDetails, websiteLink }: { contactDetails: string; websiteLink: string }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const contactInfo = contactDetails.split("\n");
 
   return (
     <>
@@ -16,10 +17,14 @@ export default function Imprint({ contactDetails, websiteLink }: { contactDetail
           className="absolute right-2 top-2 h-6 w-6 cursor-pointer"
           onClick={() => dialogRef.current?.close()}
         />
-        <p className="pt-4 text-center">{contactDetails}</p>
-        <a href={websiteLink} className="text-center text-blue-500">
-          {websiteLink}
-        </a>
+        <section className="">
+          {contactInfo.map((line) => {
+            return <p key={line}>{line}</p>;
+          })}
+          <a href={websiteLink} className="text-center text-blue-500 outline-none">
+            {websiteLink}
+          </a>
+        </section>
       </dialog>
     </>
   );
