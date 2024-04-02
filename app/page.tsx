@@ -13,7 +13,8 @@ export default function Home() {
       </p>
       <QRCodeSVG value="christoph@getalby.com" />
       <span className="pt-2 text-blue-600 underline">christoph@getalby.com</span>
-      <Imprint contactDetails={process.env.CONTACT_DETAILS || ""} />
+      <br />
+      <Imprint contactDetails={process.env.CONTACT_DETAILS || ""} websiteLink={process.env.WEBSITE_LINK || ""} />
     </main>
   );
 }
