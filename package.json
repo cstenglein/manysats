@@ -13,8 +13,8 @@
     "@vercel/og": "^0.6.2",
     "next": "^14.1.2",
     "qrcode.react": "^3.1.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "react-number-format": "^5.1.4",
     "sharp": "^0.33.2"
   },
@@ -23,11 +23,11 @@
     "@types/react": "^18.0.23",
     "@types/react-dom": "^18.0.7",
     "autoprefixer": "^10.4.9",
-    "eslint": "^8.26.0",
+    "eslint": "^8.57.0",
     "eslint-config-next": "^14.1.2",
     "postcss": "^8.4.16",
     "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "^0.5.12",
+    "prettier-plugin-tailwindcss": "^0.6.5",
     "tailwindcss": "^3.2.1",
     "typescript": "^5.0.4"
   }
