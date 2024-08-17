@@ -1,22 +1,33 @@
-import { ChangeEvent, FC, useEffect, useRef } from "react";
+import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import { NumericFormat } from "react-number-format";
-import { PriceOptions } from "./CurrentPrice";
+import { Dropdown } from "primereact/dropdown";
+import { CurrencyGroup, groupedCurrencies } from "@/models/mapping";
 
 type Props = {
   fiatAmount: string;
   onChangeFiatHandler: (event: ChangeEvent<HTMLInputElement>) => void;
-  selectedCurrency: PriceOptions;
-  onCurrencyChange: (event: ChangeEvent<HTMLSelectElement>) => void;
+  selectedCurrency: string;
+  onCurrencyChange: (currencyCode: string) => void;
 };
 
 const FiatInput: FC<Props> = ({ fiatAmount, onChangeFiatHandler, selectedCurrency, onCurrencyChange }) => {
   const inputFiat = useRef<HTMLInputElement | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (inputFiat.current) {
       inputFiat.current.focus();
     }
+    setIsLoading(false);
   }, []);
+
+  const groupedItemTemplate = (option: CurrencyGroup) => {
+    return (
+      <div className="align-items-center flex">
+        <div>{option.label}</div>
+      </div>
+    );
+  };
 
   return (
     <article className="flex w-full items-center justify-center gap-2 rounded-b-xl py-10 pl-10 pr-5">
@@ -28,12 +39,21 @@ const FiatInput: FC<Props> = ({ fiatAmount, onChangeFiatHandler, selectedCurrenc
         getInputRef={inputFiat}
         onChange={onChangeFiatHandler}
       />
-      <select className="bg-white" value={selectedCurrency} onChange={onCurrencyChange}>
-        <option value={PriceOptions.EUR}>EUR</option>
-        <option value={PriceOptions.GBP}>GBP</option>
-        <option value={PriceOptions.JPY}>JPY</option>
-        <option value={PriceOptions.USD}>USD</option>
-      </select>
+      {!isLoading && (
+        <Dropdown
+          value={selectedCurrency}
+          onChange={(e) => onCurrencyChange(e.value)}
+          options={groupedCurrencies}
+          optionLabel="label"
+          optionGroupLabel="label"
+          optionGroupChildren="items"
+          optionGroupTemplate={groupedItemTemplate}
+          className="w-full"
+          filterInputAutoFocus={true}
+          valueTemplate={(option) => <div>{option.value}</div>}
+          filter
+        />
+      )}
     </article>
   );
 };

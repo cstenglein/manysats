@@ -1,7 +1,10 @@
 import { Metadata } from "next";
 import "../styles/globals.css";
+import "primereact/resources/themes/lara-light-blue/theme.css";
 
 import type { Viewport } from "next";
+import { PrimeReactProvider } from "primereact/api";
+
 
 export const viewport: Viewport = {
   themeColor: "#3b82f6",
@@ -30,13 +33,17 @@ export const metadata: Metadata = {
     },
   ],
   manifest: "/manifest.json",
+  other: {
+    lightning: "lnurlp:christoph@getalby.com",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <meta name="lightning" content="lnurlp:christoph@getalby.com" />
-      <body>{children}</body>
+      <PrimeReactProvider>
+        <body>{children}</body>
+      </PrimeReactProvider>
     </html>
   );
 }

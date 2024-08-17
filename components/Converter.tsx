@@ -23,7 +23,7 @@ const Converter: FC = () => {
   return (
     <>
       <section className="flex w-11/12 flex-col items-center rounded border border-blue-400 bg-white shadow-md md:w-auto">
-        <CurrentPrice price={priceData?.[selectedCurrency]} selectedCurrency={selectedCurrency} />
+        <CurrentPrice priceData={priceData} selectedCurrency={selectedCurrency} />
         <RefreshBtn onRefresh={onRefresh} />
         <FiatInput
           fiatAmount={amounts.fiat}
@@ -34,7 +34,7 @@ const Converter: FC = () => {
         <NumberInput id="input-sat" amount={amounts.sat} onChange={onChangeSatHandler} label="SAT" />
         <NumberInput id="input-btc" amount={amounts.btc} onChange={onChangeBtcHandler} label="BTC" />
       </section>
-      {!error && <PriceUpdate date={priceData?.date?.toString()} />}
+      {!error && <PriceUpdate date={priceData.lastupdate.toString()} />}
       {error && <p className="pt-6 text-sm text-red-500">Failed to fetch price data. Please try again later</p>}
     </>
   );

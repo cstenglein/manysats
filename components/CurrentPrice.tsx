@@ -1,23 +1,30 @@
-import { FC } from "react";
-
-export enum PriceOptions {
-  EUR = "EUR",
-  GBP = "GBP",
-  JPY = "JPY",
-  USD = "USD",
-}
+import React from 'react';
 
 type Props = {
-  price: number | undefined;
-  selectedCurrency: PriceOptions;
+  priceData: {
+    rates: {
+      [currencyCode: string]: number;
+    };
+  };
+  selectedCurrency: string;
 };
 
-const CurrentPrice: FC<Props> = ({ price, selectedCurrency }) => {
+export default function CurrentPrice({ priceData, selectedCurrency }: Props) {
+  const calculatePrice = () => {
+    const btcRateInUSD = priceData.rates["BTC"] || 1;
+    const currencyRateInUSD = priceData.rates[selectedCurrency] || 1;
+    return 1 / btcRateInUSD * currencyRateInUSD;
+  };
+
+  const price = priceData.rates["BTC"] ? calculatePrice() : undefined;
+
   const formattedPrice = price
     ? new Intl.NumberFormat(window.navigator.language, {
-        minimumFractionDigits: 2,
-        currency: selectedCurrency,
-      }).format(price)
+      style: 'currency',
+      currency: selectedCurrency.replace("_DIPRO", "").replace("_DICOM", "").replace("_BLKMKT", ""),
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }).format(price)
     : null;
 
   return (
@@ -34,6 +41,4 @@ const CurrentPrice: FC<Props> = ({ price, selectedCurrency }) => {
       )}
     </article>
   );
-};
-
-export default CurrentPrice;
+}
