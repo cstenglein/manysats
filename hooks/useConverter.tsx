@@ -1,32 +1,41 @@
-import { PriceOptions } from "@/components/CurrentPrice";
-import { PriceData } from "@/models/pricedata";
-import { convertBtcToFiat, convertBtcToSat, convertFiat, convertSatToBtc, convertSatToFiat } from "@/utils/convert";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { ExchangeRatesResponse } from "@/models/exchangeRateResponse";
 
-async function fetchData(): Promise<PriceData> {
+async function fetchData(): Promise<ExchangeRatesResponse> {
   const res = await fetch("/api/price");
   return await res.json();
 }
 
 export function useConverter() {
   const [error, setError] = useState<boolean>(false);
-  const [priceData, setPriceData] = useState<PriceData>({
-    date: "",
-    EUR: 0,
-    GBP: 0,
-    JPY: 0,
-    USD: 0,
+  const [priceData, setPriceData] = useState<ExchangeRatesResponse>({
+    table: "",
+    rates: {},
+    lastupdate: "",
+    lastUpdateKraken: "",
   });
   const [amounts, setAmounts] = useState<{ fiat: string; sat: string; btc: string }>({
     fiat: "",
     sat: "",
     btc: "",
   });
-  const [selectedCurrency, setSelectedCurrency] = useState<PriceOptions>(PriceOptions.EUR);
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
 
-  const validateData = useCallback((data: PriceData) => {
-    setPriceData(data);
+  const checkLocalStorage = useCallback((priceData: ExchangeRatesResponse) => {
+    if (localStorage.getItem("currency")) {
+      if (priceData.rates[localStorage.getItem("currency")!]) {
+        setSelectedCurrency(localStorage.getItem("currency")!);
+      }
+    }
   }, []);
+
+  const validateData = useCallback(
+    (data: ExchangeRatesResponse) => {
+      setPriceData(data);
+      checkLocalStorage(data);
+    },
+    [checkLocalStorage],
+  );
 
   useEffect(() => {
     fetchData()
@@ -34,63 +43,71 @@ export function useConverter() {
       .catch(() => setError(true));
   }, [validateData]);
 
-  const onRefresh = async () => {
+  const onRefresh = useCallback(async () => {
     setError(false);
-    await fetchData();
+    try {
+      const data = await fetchData();
+      validateData(data);
+    } catch {
+      setError(true);
+    }
+  }, [validateData]);
+
+  const onCurrencyChange = (currencyCode: string) => {
+    setSelectedCurrency(currencyCode);
+    localStorage.setItem("currency", currencyCode);
+    updateAmounts(amounts.fiat, currencyCode);
   };
 
-  const onCurrencyChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    event.preventDefault();
+  const getBtcPrice = (currency: string): number => {
+    const btcRateInUSD = priceData.rates["BTC"] || 1;
+    const currencyRateInUSD = priceData.rates[currency] || 1;
+    return (1 / btcRateInUSD) * currencyRateInUSD;
+  };
 
-    const selectedCurrency = PriceOptions[event.target.value as keyof typeof PriceOptions];
-    setSelectedCurrency(selectedCurrency);
-
-    const { sat, btc } = convertFiat(amounts.fiat, priceData[selectedCurrency]);
+  const updateAmounts = (fiatAmount: string, currency: string) => {
+    const fiatValue = parseFloat(fiatAmount) || 0;
+    const btcPrice = getBtcPrice(currency);
+    const btcAmount = fiatValue / btcPrice;
+    const satAmount = btcAmount * 100000000;
 
     setAmounts({
-      ...amounts,
-      sat,
-      btc,
+      fiat: fiatAmount,
+      btc: btcAmount.toFixed(8),
+      sat: satAmount.toFixed(0),
     });
   };
 
   const onChangeFiatHandler = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-
     const fiatAmount = event.target.value;
-
-    const { sat, btc } = convertFiat(fiatAmount, priceData[selectedCurrency]);
-
-    setAmounts({
-      ...amounts,
-      fiat: fiatAmount,
-      sat,
-      btc,
-    });
+    updateAmounts(fiatAmount, selectedCurrency);
   };
 
   const onChangeSatHandler = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-
     const satAmount = event.target.value;
+    const btcAmount = parseFloat(satAmount) / 100000000;
+    const btcPrice = getBtcPrice(selectedCurrency);
+    const fiatAmount = (btcAmount * btcPrice).toFixed(2);
 
     setAmounts({
-      ...amounts,
-      fiat: convertSatToFiat(satAmount, priceData[selectedCurrency]),
+      fiat: fiatAmount,
       sat: satAmount,
-      btc: convertSatToBtc(satAmount),
+      btc: btcAmount.toFixed(8),
     });
   };
 
   const onChangeBtcHandler = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-
     const btcAmount = event.target.value;
+    const satAmount = (parseFloat(btcAmount) * 100000000).toFixed(0);
+    const btcPrice = getBtcPrice(selectedCurrency);
+    const fiatAmount = (parseFloat(btcAmount) * btcPrice).toFixed(2);
 
     setAmounts({
-      ...amounts,
-      fiat: convertBtcToFiat(btcAmount, priceData[selectedCurrency]),
-      sat: convertBtcToSat(btcAmount),
+      fiat: fiatAmount,
+      sat: satAmount,
       btc: btcAmount,
     });
   };
@@ -105,5 +122,7 @@ export function useConverter() {
     onChangeFiatHandler,
     onChangeSatHandler,
     onChangeBtcHandler,
+    availableCurrencies: Object.keys(priceData.rates),
+    getBtcPrice,
   };
 }

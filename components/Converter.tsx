@@ -1,13 +1,15 @@
 "use client";
 import { useConverter } from "@/hooks/useConverter";
-import { FC } from "react";
 import CurrentPrice from "./CurrentPrice";
 import FiatInput from "./FiatInput";
 import NumberInput from "./NumberInput";
 import PriceUpdate from "./PriceUpdate";
-import RefreshBtn from "./RefreshBtn";
+import { Button } from "primereact/button";
+import { useEffect, useState } from "react";
 
-const Converter: FC = () => {
+export default function Converter() {
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [countdown, setCountdown] = useState(60);
   const {
     error,
     priceData,
@@ -20,11 +22,42 @@ const Converter: FC = () => {
     onChangeBtcHandler,
   } = useConverter();
 
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+    if (isDisabled && countdown > 0) {
+      timer = setInterval(() => {
+        setCountdown((prevCountdown) => prevCountdown - 1);
+      }, 1000);
+    }
+
+    if (countdown === 0) {
+      setIsDisabled(false);
+      setCountdown(60);
+    }
+
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [isDisabled, countdown]);
+
+  const handleRefreshBtnClick = async () => {
+    setIsDisabled(true);
+    await onRefresh();
+  };
+
   return (
     <>
       <section className="flex w-11/12 flex-col items-center rounded border border-blue-400 bg-white shadow-md md:w-auto">
-        <CurrentPrice price={priceData?.[selectedCurrency]} selectedCurrency={selectedCurrency} />
-        <RefreshBtn onRefresh={onRefresh} />
+        <CurrentPrice priceData={priceData} selectedCurrency={selectedCurrency} />
+        <article className="flex w-full justify-end px-2">
+          <Button
+            className="relative -top-4 z-10 -my-5 flex items-center justify-center rounded-full bg-blue-600 p-2 text-white"
+            label={isDisabled ? `Refresh in ${countdown}s` : "Refresh"}
+            icon="pi pi-sync"
+            onClick={handleRefreshBtnClick}
+            disabled={isDisabled}
+          />
+        </article>
         <FiatInput
           fiatAmount={amounts.fiat}
           onChangeFiatHandler={onChangeFiatHandler}
@@ -34,10 +67,8 @@ const Converter: FC = () => {
         <NumberInput id="input-sat" amount={amounts.sat} onChange={onChangeSatHandler} label="SAT" />
         <NumberInput id="input-btc" amount={amounts.btc} onChange={onChangeBtcHandler} label="BTC" />
       </section>
-      {!error && <PriceUpdate date={priceData?.date?.toString()} />}
+      {!error && <PriceUpdate date={priceData.lastupdate} dateKraken={priceData.lastUpdateKraken} />}
       {error && <p className="pt-6 text-sm text-red-500">Failed to fetch price data. Please try again later</p>}
     </>
   );
-};
-
-export default Converter;
+}
