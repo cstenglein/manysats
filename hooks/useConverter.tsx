@@ -1,5 +1,13 @@
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { ExchangeRatesResponse } from "@/models/exchangeRateResponse";
+import {
+  convertBtcToFiat,
+  convertBtcToSat,
+  convertFiatToBtc,
+  convertFiatToSat,
+  convertSatToBtc,
+  convertSatToFiat,
+} from "@/utils/convert";
 
 async function fetchData(): Promise<ExchangeRatesResponse> {
   const res = await fetch("/api/price");
@@ -66,15 +74,12 @@ export function useConverter() {
   };
 
   const updateAmounts = (fiatAmount: string, currency: string) => {
-    const fiatValue = parseFloat(fiatAmount) || 0;
     const btcPrice = getBtcPrice(currency);
-    const btcAmount = fiatValue / btcPrice;
-    const satAmount = btcAmount * 100000000;
 
     setAmounts({
       fiat: fiatAmount,
-      btc: btcAmount.toFixed(8),
-      sat: satAmount.toFixed(0),
+      btc: convertFiatToBtc(fiatAmount, btcPrice),
+      sat: convertFiatToSat(fiatAmount, btcPrice),
     });
   };
 
@@ -87,27 +92,23 @@ export function useConverter() {
   const onChangeSatHandler = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const satAmount = event.target.value;
-    const btcAmount = parseFloat(satAmount) / 100000000;
     const btcPrice = getBtcPrice(selectedCurrency);
-    const fiatAmount = (btcAmount * btcPrice).toFixed(2);
 
     setAmounts({
-      fiat: fiatAmount,
+      fiat: convertSatToFiat(satAmount, btcPrice),
       sat: satAmount,
-      btc: btcAmount.toFixed(8),
+      btc: convertSatToBtc(satAmount),
     });
   };
 
   const onChangeBtcHandler = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const btcAmount = event.target.value;
-    const satAmount = (parseFloat(btcAmount) * 100000000).toFixed(0);
     const btcPrice = getBtcPrice(selectedCurrency);
-    const fiatAmount = (parseFloat(btcAmount) * btcPrice).toFixed(2);
 
     setAmounts({
-      fiat: fiatAmount,
-      sat: satAmount,
+      fiat: convertBtcToFiat(btcAmount, btcPrice),
+      sat: convertBtcToSat(btcAmount),
       btc: btcAmount,
     });
   };
