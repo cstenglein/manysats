@@ -48,7 +48,6 @@ const FiatInput: FC<Props> = ({ fiatAmount, onChangeFiatHandler, selectedCurrenc
           optionGroupLabel="label"
           optionGroupChildren="items"
           optionGroupTemplate={groupedItemTemplate}
-          filterInputAutoFocus={true}
           valueTemplate={(option) => <div>{option.value}</div>}
           filter
           resetFilterOnHide={true}
