@@ -15,9 +15,6 @@ const FiatInput: FC<Props> = ({ fiatAmount, onChangeFiatHandler, selectedCurrenc
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (inputFiat.current) {
-      inputFiat.current.focus();
-    }
     setIsLoading(false);
   }, []);
 
