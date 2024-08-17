@@ -1,7 +1,13 @@
-import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { NumericFormat } from "react-number-format";
-import { Dropdown } from "primereact/dropdown";
-import { CurrencyGroup, groupedCurrencies } from "@/models/mapping";
+import { CurrencyItem, groupedCurrencies } from "@/models/mapping";
+import { components, GroupBase, OptionsOrGroups, SingleValue, SingleValueProps } from "react-select";
+import dynamic from "next/dynamic";
+
+const Select = dynamic(() => import("react-select"), {
+  ssr: false,
+  loading: () => <select className="w-48 bg-white"></select>,
+});
 
 type Props = {
   fiatAmount: string;
@@ -10,9 +16,10 @@ type Props = {
   onCurrencyChange: (currencyCode: string) => void;
 };
 
-const FiatInput: FC<Props> = ({ fiatAmount, onChangeFiatHandler, selectedCurrency, onCurrencyChange }) => {
+export default function FiatInput({ fiatAmount, onChangeFiatHandler, selectedCurrency, onCurrencyChange }: Props) {
   const inputFiat = useRef<HTMLInputElement | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [inputValue, setInputValue] = useState<string>("");
 
   useEffect(() => {
     if (inputFiat.current) {
@@ -21,12 +28,24 @@ const FiatInput: FC<Props> = ({ fiatAmount, onChangeFiatHandler, selectedCurrenc
     setIsLoading(false);
   }, []);
 
-  const groupedItemTemplate = (option: CurrencyGroup) => {
+  const groupedOptions: OptionsOrGroups<CurrencyItem, GroupBase<CurrencyItem>> = groupedCurrencies.map((group) => ({
+    label: group.label,
+    options: group.items.filter((item) => item.label.toLowerCase().includes(inputValue.toLowerCase())),
+  }));
+
+  const selectedCurrencyItem =
+    groupedCurrencies.flatMap((group) => group.items).find((item) => item.value === selectedCurrency) || null;
+
+  const CustomSingleValue = (props: SingleValueProps<CurrencyItem, false, GroupBase<CurrencyItem>>) => {
     return (
-      <div className="align-items-center flex">
-        <div>{option.label}</div>
-      </div>
+      <components.SingleValue {...props}>
+        <span>{props.data.value}</span>
+      </components.SingleValue>
     );
+  };
+
+  const handleCurrencyChange = (newValue: SingleValue<CurrencyItem>) => {
+    onCurrencyChange(newValue ? newValue.value : "USD");
   };
 
   return (
@@ -39,20 +58,17 @@ const FiatInput: FC<Props> = ({ fiatAmount, onChangeFiatHandler, selectedCurrenc
         getInputRef={inputFiat}
         onChange={onChangeFiatHandler}
       />
-      {!isLoading && (
-        <Dropdown
-          value={selectedCurrency}
-          onChange={(e) => onCurrencyChange(e.value)}
-          options={groupedCurrencies}
-          optionLabel="label"
-          optionGroupLabel="label"
-          optionGroupChildren="items"
-          optionGroupTemplate={groupedItemTemplate}
-          valueTemplate={(option) => <div>{option.value}</div>}
-        />
-      )}
+      <Select
+        className="w-48"
+        options={groupedOptions}
+        onInputChange={(value) => setInputValue(value)}
+        // @ts-ignore
+        onChange={handleCurrencyChange}
+        value={selectedCurrencyItem}
+        isLoading={isLoading}
+        // @ts-ignore
+        components={{ SingleValue: CustomSingleValue }}
+      />
     </article>
   );
-};
-
-export default FiatInput;
+}
