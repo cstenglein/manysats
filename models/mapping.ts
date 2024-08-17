@@ -1,4 +1,3 @@
-
 export interface CurrencyItem {
   label: string;
   value: string;
@@ -128,7 +127,7 @@ export const groupedCurrencies: CurrencyGroup[] = [
       { label: "Surinamese Dollar - SRD", value: "SRD" },
       { label: "Uruguayan Peso - UYU", value: "UYU" },
       { label: "Venezuelan Bolívar - VES", value: "VES" },
-      { label: "Venezuelan Bolívar - Blackmarket - VEF_BLKMKT", value: "VEF_BLKMKT" },
+      { label: "Venezuelan Bolívar - Black market - VEF_BLKMKT", value: "VEF_BLKMKT" },
       { label: "Venezuelan Bolívar - DIPRO - VEF_DIPRO", value: "VEF_DIPRO" },
       { label: "Venezuelan Bolívar - DICOM - VEF_DICOM", value: "VEF_DICOM" },
     ],

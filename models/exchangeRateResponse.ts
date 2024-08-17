@@ -4,4 +4,5 @@ export type ExchangeRatesResponse = {
     [currencyCode: string]: number;
   };
   lastupdate: string;
+  lastUpdateKraken: string;
 };

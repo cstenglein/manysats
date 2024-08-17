@@ -15,6 +15,7 @@ export async function GET(_: Request) {
       headers: {
         "Content-Type": "application/json",
       },
+      // cache the response for 30 minutes
       next: { revalidate: 1800 },
     });
     const ticker: ExchangeRatesResponse = await tickerResp.json();
@@ -40,6 +41,7 @@ export async function GET(_: Request) {
     ticker.rates["CAD"] = btcToCad / btcToUsd;
     ticker.rates["GBP"] = btcToGbp / btcToUsd;
     ticker.rates["JPY"] = btcToJpy / btcToUsd;
+    ticker.lastUpdateKraken = new Date().toISOString();
 
     return Response.json(ticker);
   } catch (e) {

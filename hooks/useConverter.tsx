@@ -12,6 +12,7 @@ export function useConverter() {
     table: "",
     rates: {},
     lastupdate: "",
+    lastUpdateKraken: "",
   });
   const [amounts, setAmounts] = useState<{ fiat: string; sat: string; btc: string }>({
     fiat: "",

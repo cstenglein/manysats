@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import "../styles/globals.css";
 import "primereact/resources/themes/lara-light-blue/theme.css";
+import 'primeicons/primeicons.css';
 
 import type { Viewport } from "next";
 import { PrimeReactProvider } from "primereact/api";
