@@ -1,12 +1,5 @@
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
-
-export type ExchangeRatesResponse = {
-  table: string;
-  rates: {
-    [currencyCode: string]: number;
-  };
-  lastupdate: string;
-};
+import { ExchangeRatesResponse } from "@/models/exchangeRateResponse";
 
 async function fetchData(): Promise<ExchangeRatesResponse> {
   const res = await fetch("/api/price");
