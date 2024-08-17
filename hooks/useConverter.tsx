@@ -54,6 +54,7 @@ export function useConverter() {
   }, [validateData]);
 
   const onCurrencyChange = (currencyCode: string) => {
+    if (selectedCurrency === currencyCode) return;
     setSelectedCurrency(currencyCode);
     localStorage.setItem("currency", currencyCode);
     updateAmounts(amounts.fiat, currencyCode);
