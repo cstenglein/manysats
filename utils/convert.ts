@@ -1,3 +1,5 @@
+import { ExchangeRatesResponse } from "@/models/exchangeRateResponse";
+
 export function convertSatToBtc(satInput: string): string {
   return (+satInput.replace(/,/g, "") / 100_000_000).toFixed(8);
 }
@@ -26,8 +28,8 @@ export function convertSatToFiat(satInput: string, price: number): string {
   return ((satAmount / 100_000_000) * price).toFixed(2);
 }
 
-export function convertFiat(fiatAmount: string, price: number) {
-  const sat = convertFiatToSat(fiatAmount, price);
-  const btc = convertFiatToBtc(fiatAmount, price);
-  return { sat, btc };
-}
+export const getBtcPrice = (priceData: ExchangeRatesResponse, selectedCurrency: string) => {
+  const btcRateInUSD = priceData.rates["BTC"] || 1;
+  const currencyRateInUSD = priceData.rates[selectedCurrency] || 1;
+  return (1 / btcRateInUSD) * currencyRateInUSD;
+};

@@ -7,7 +7,14 @@ import {
   convertFiatToSat,
   convertSatToBtc,
   convertSatToFiat,
+  getBtcPrice,
 } from "@/utils/convert";
+
+type Amounts = {
+  fiat: string;
+  sat: string;
+  btc: string;
+};
 
 async function fetchData(): Promise<ExchangeRatesResponse> {
   const res = await fetch("/api/price");
@@ -22,7 +29,7 @@ export function useConverter() {
     lastupdate: "",
     lastUpdateKraken: "",
   });
-  const [amounts, setAmounts] = useState<{ fiat: string; sat: string; btc: string }>({
+  const [amounts, setAmounts] = useState<Amounts>({
     fiat: "",
     sat: "",
     btc: "",
@@ -62,19 +69,15 @@ export function useConverter() {
   }, [validateData]);
 
   const onCurrencyChange = (currencyCode: string) => {
+    if (!priceData.rates[currencyCode] || currencyCode === selectedCurrency) return;
     setSelectedCurrency(currencyCode);
     localStorage.setItem("currency", currencyCode);
+
     updateAmounts(amounts.fiat, currencyCode);
   };
 
-  const getBtcPrice = (currency: string): number => {
-    const btcRateInUSD = priceData.rates["BTC"] || 1;
-    const currencyRateInUSD = priceData.rates[currency] || 1;
-    return (1 / btcRateInUSD) * currencyRateInUSD;
-  };
-
   const updateAmounts = (fiatAmount: string, currency: string) => {
-    const btcPrice = getBtcPrice(currency);
+    const btcPrice = getBtcPrice(priceData, currency);
 
     setAmounts({
       fiat: fiatAmount,
@@ -92,7 +95,7 @@ export function useConverter() {
   const onChangeSatHandler = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const satAmount = event.target.value;
-    const btcPrice = getBtcPrice(selectedCurrency);
+    const btcPrice = getBtcPrice(priceData, selectedCurrency);
 
     setAmounts({
       fiat: convertSatToFiat(satAmount, btcPrice),
@@ -104,7 +107,7 @@ export function useConverter() {
   const onChangeBtcHandler = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const btcAmount = event.target.value;
-    const btcPrice = getBtcPrice(selectedCurrency);
+    const btcPrice = getBtcPrice(priceData, selectedCurrency);
 
     setAmounts({
       fiat: convertBtcToFiat(btcAmount, btcPrice),
@@ -123,7 +126,6 @@ export function useConverter() {
     onChangeFiatHandler,
     onChangeSatHandler,
     onChangeBtcHandler,
-    availableCurrencies: Object.keys(priceData.rates),
     getBtcPrice,
   };
 }
