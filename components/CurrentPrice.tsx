@@ -1,27 +1,20 @@
 import React from "react";
+import { ExchangeRatesResponse } from "@/models/exchangeRateResponse";
+import { getBtcPrice } from "@/utils/convert";
 
 type Props = {
-  priceData: {
-    rates: {
-      [currencyCode: string]: number;
-    };
-  };
+  priceData: ExchangeRatesResponse;
   selectedCurrency: string;
 };
 
 export default function CurrentPrice({ priceData, selectedCurrency }: Props) {
-  const calculatePrice = () => {
-    const btcRateInUSD = priceData.rates["BTC"] || 1;
-    const currencyRateInUSD = priceData.rates[selectedCurrency] || 1;
-    return (1 / btcRateInUSD) * currencyRateInUSD;
-  };
-
-  const price = priceData.rates["BTC"] ? calculatePrice() : undefined;
+  const price = priceData.rates["BTC"] ? getBtcPrice(priceData, selectedCurrency) : undefined;
 
   const formattedPrice = price
     ? new Intl.NumberFormat(window.navigator.language, {
         style: "currency",
-        currency: selectedCurrency.replace("_DIPRO", "").replace("_DICOM", "").replace("_BLKMKT", ""),
+        //replace everything after "_"
+        currency: selectedCurrency.split("_")[0],
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       }).format(price)

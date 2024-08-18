@@ -1,7 +1,6 @@
 import Image from "next/image";
-import { FC } from "react";
 
-const Title: FC = () => {
+export default function Title() {
   return (
     <>
       <h1 className="mb-2 mt-8 flex items-center justify-center p-4 text-4xl">
@@ -13,6 +12,4 @@ const Title: FC = () => {
       </h2>
     </>
   );
-};
-
-export default Title;
+}
