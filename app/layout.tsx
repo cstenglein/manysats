@@ -1,14 +1,11 @@
 import { Metadata } from "next";
 import "../styles/globals.css";
-import "primereact/resources/themes/lara-light-blue/theme.css";
-import 'primeicons/primeicons.css';
 
 import type { Viewport } from "next";
-import { PrimeReactProvider } from "primereact/api";
-
 
 export const viewport: Viewport = {
   themeColor: "#3b82f6",
+  userScalable: false,
 };
 
 export const metadata: Metadata = {
@@ -42,9 +39,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <PrimeReactProvider>
-        <body>{children}</body>
-      </PrimeReactProvider>
+      <body>{children}</body>
     </html>
   );
 }

@@ -4,8 +4,9 @@ import CurrentPrice from "./CurrentPrice";
 import FiatInput from "./FiatInput";
 import NumberInput from "./NumberInput";
 import PriceUpdate from "./PriceUpdate";
-import { Button } from "primereact/button";
 import { useEffect, useState } from "react";
+import refreshIcon from "../public/icons/refresh.svg";
+import Image from "next/image";
 
 export default function Converter() {
   const [isDisabled, setIsDisabled] = useState(false);
@@ -50,13 +51,14 @@ export default function Converter() {
       <section className="flex w-11/12 flex-col items-center rounded border border-blue-400 bg-white shadow-md md:w-auto">
         <CurrentPrice priceData={priceData} selectedCurrency={selectedCurrency} />
         <article className="flex w-full justify-end px-2">
-          <Button
-            className="relative -top-4 z-10 -my-5 flex items-center justify-center rounded-full bg-blue-600 p-2 text-white"
-            label={isDisabled ? `Refresh in ${countdown}s` : "Refresh"}
-            icon="pi pi-sync"
+          <button
+            className="relative -top-4 z-10 -my-5 flex items-center justify-center rounded-full bg-blue-600 p-2 text-white disabled:bg-gray-400"
             onClick={handleRefreshBtnClick}
             disabled={isDisabled}
-          />
+          >
+            <Image className="mr-1" src={refreshIcon} alt="bla" />
+            {isDisabled ? `Refresh in ${countdown}s` : "Refresh"}
+          </button>
         </article>
         <FiatInput
           fiatAmount={amounts.fiat}
