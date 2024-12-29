@@ -61,12 +61,12 @@ export default function FiatInput({ fiatAmount, onChangeFiatHandler, selectedCur
       <Select
         className="w-48"
         options={groupedOptions}
-        onInputChange={(value) => setInputValue(value)}
-        // @ts-ignore
+        onInputChange={(value: string) => setInputValue(value)}
+        // @ts-expect-error works
         onChange={handleCurrencyChange}
         value={selectedCurrencyItem}
         isLoading={isLoading}
-        // @ts-ignore
+        // @ts-expect-error works
         components={{ SingleValue: CustomSingleValue }}
       />
     </article>

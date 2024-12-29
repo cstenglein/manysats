@@ -8,7 +8,7 @@ export const runtime = "edge";
 const KRAKEN_TICKER_URL = "https://api.kraken.com/0/public/Ticker";
 const TICKER_URL = "https://cdn.wahrungsrechner.info/api/latest.json";
 
-export async function GET(_: Request) {
+export async function GET() {
   try {
     // Fetch the general ticker data
     const tickerResp = await fetch(TICKER_URL, {
