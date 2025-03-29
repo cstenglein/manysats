@@ -7,7 +7,7 @@ export default function Title() {
         <Image src={"/btc-icon.svg"} height={40} alt="Bitcoin Icon" width={40} priority />
         <span className="ml-2">ManySats</span>
       </h1>
-      <h2 className="mb-8 px-8 py-4 text-center text-2xl italic text-blue-600">
+      <h2 className="mb-8 px-8 py-4 text-center text-2xl italic text-link">
         Your simple Fiat to Satoshi Converter
       </h2>
     </>

@@ -15,7 +15,7 @@ export default function PriceUpdate({ date, dateKraken }: Props) {
 
   return (
     <>
-      <article className="pt-6 text-sm text-blue-600">
+      <article className="pt-6 text-sm text-link">
         <ul className="p-2">
           <li className="font-bold">Last updated:</li>
           <ul className="list-none">
@@ -41,7 +41,7 @@ export default function PriceUpdate({ date, dateKraken }: Props) {
           </ul>
         </ul>
       </article>
-      <article className="pt-6 text-center text-sm text-blue-600">
+      <article className="pt-6 text-center text-sm text-link">
         Currency rates provided by{" "}
         <Link href="https://wahrungsrechner.info/pages/api">
           <span className="cursor-pointer underline">wahrungsrechner.info</span>

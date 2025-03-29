@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 
 const Select = dynamic(() => import("react-select"), {
   ssr: false,
-  loading: () => <select className="w-48 bg-white"></select>,
+  loading: () => <select className="w-48 bg-primary"></select>,
 });
 
 type Props = {
@@ -68,6 +68,36 @@ export default function FiatInput({ fiatAmount, onChangeFiatHandler, selectedCur
         isLoading={isLoading}
         // @ts-expect-error works
         components={{ SingleValue: CustomSingleValue }}
+        styles={{
+          control: (baseStyles) => ({
+            ...baseStyles,
+            backgroundColor: 'rgb(var(--card))',
+            borderColor: 'rgb(var(--primary))',
+          }),
+          menu: (baseStyles) => ({
+            ...baseStyles,
+            backgroundColor: 'rgb(var(--card))',
+            color: 'rgb(var(--foreground))',
+          }),
+          option: (baseStyles, state) => ({
+            ...baseStyles,
+            backgroundColor: state.isFocused 
+              ? 'rgb(var(--primary))' 
+              : 'rgb(var(--card))',
+            color: state.isFocused 
+              ? 'rgb(var(--primary-foreground))' 
+              : 'rgb(var(--foreground))',
+            cursor: 'pointer',
+            ':active': {
+              backgroundColor: 'rgb(var(--primary))',
+              color: 'rgb(var(--primary-foreground))'
+            }
+          }),
+          singleValue: (baseStyles) => ({
+            ...baseStyles,
+            color: 'rgb(var(--foreground))'
+          }),
+        }}
       />
     </article>
   );

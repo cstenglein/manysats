@@ -2,10 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --background: 240 249 255; /* sky-50 */
+    --foreground: 10 10 10; /* near black */
+    --card: 255 255 255; /* white */
+    --card-border: 96 165 250; /* blue-400 */
+    --primary: 37 99 235; /* blue-600 */
+    --primary-foreground: 255 255 255; /* white */
+    --muted: 209 213 219; /* gray-300 */
+    --error: 239 68 68; /* red-500 */
+    --success: 34 197 94; /* green-500 */
+    --link: 37 99 235; /* blue-600 */
+  }
+
+  .dark {
+    --background: 15 23 42; /* slate-900 */
+    --foreground: 241 245 249; /* slate-100 */
+    --card: 30 41 59; /* slate-800 */
+    --card-border: 96 165 250; /* blue-400 */
+    --primary: 59 130 246; /* blue-500 */
+    --primary-foreground: 255 255 255; /* white */
+    --muted: 71 85 105; /* slate-600 */
+    --error: 239 68 68; /* red-500 */
+    --success: 34 197 94; /* green-500 */
+    --link: 96 165 250; /* blue-400 */
+  }
+}
+
 body {
-  @apply h-full bg-gray-100;
+  @apply min-h-screen bg-background text-foreground;
+}
+
+body * {
+  @apply transition-colors duration-200 ease-in-out;
 }
 
 .input-underline {
-  @apply w-11/12 border-b border-blue-600 p-2 font-mono outline-none focus:shadow-[0_1px_0px_0px_rgba(59,130,246,1)];
+  @apply w-11/12 border-b border-primary p-2 font-mono outline-none focus:shadow-[0_1px_0px_0px_rgba(59,130,246,1)] bg-card text-foreground;
 }

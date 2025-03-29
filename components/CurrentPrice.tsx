@@ -23,12 +23,12 @@ export default function CurrentPrice({ priceData, selectedCurrency }: Props) {
   return (
     <article className="mx-5 flex w-full justify-start px-2 text-center">
       {!formattedPrice && (
-        <p className="relative -top-2 z-10 -my-5 flex w-5/12 animate-pulse items-center justify-center rounded-full bg-gray-400 p-2 text-sm text-white">
+        <p className="relative -top-2 z-10 -my-5 flex w-5/12 animate-pulse items-center justify-center rounded-full bg-muted p-2 text-sm text-primary-foreground">
           Loading price... <br /> {selectedCurrency} / BTC
         </p>
       )}
       {formattedPrice && (
-        <p className="relative -top-2 z-10 -my-5 flex w-5/12 items-center justify-center rounded-full bg-blue-600 p-2 text-sm font-semibold text-white">
+        <p className="relative -top-2 z-10 -my-5 flex w-5/12 items-center justify-center rounded-full bg-primary p-2 text-sm font-semibold text-primary-foreground">
           {formattedPrice} <br /> {selectedCurrency} / BTC
         </p>
       )}

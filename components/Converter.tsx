@@ -48,11 +48,11 @@ export default function Converter() {
 
   return (
     <>
-      <section className="flex w-11/12 flex-col items-center rounded border border-blue-400 bg-white shadow-md md:w-auto">
+      <section className="flex w-11/12 flex-col items-center rounded border border-card-border bg-card shadow-md md:w-auto">
         <CurrentPrice priceData={priceData} selectedCurrency={selectedCurrency} />
         <article className="flex w-full justify-end px-2">
           <button
-            className="relative -top-4 z-10 -my-5 flex items-center justify-center rounded-full bg-blue-600 p-2 text-white disabled:bg-gray-400"
+            className="relative -top-4 z-10 -my-5 flex items-center justify-center rounded-full bg-primary p-2 text-primary-foreground disabled:bg-muted"
             onClick={handleRefreshBtnClick}
             disabled={isDisabled}
           >
@@ -70,7 +70,7 @@ export default function Converter() {
         <NumberInput id="input-btc" amount={amounts.btc} onChange={onChangeBtcHandler} label="BTC" />
       </section>
       {!error && <PriceUpdate date={priceData.lastupdate} dateKraken={priceData.lastUpdateKraken} />}
-      {error && <p className="pt-6 text-sm text-red-500">Failed to fetch price data. Please try again later</p>}
+      {error && <p className="pt-6 text-sm text-error">Failed to fetch price data. Please try again later</p>}
     </>
   );
 }

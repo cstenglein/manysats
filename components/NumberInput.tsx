@@ -29,13 +29,13 @@ export default function NumberInput({ id, amount, onChange, label }: Props) {
     <article className="flex w-full items-center justify-center gap-2 rounded-b-xl p-10">
       <NumericFormat 
         id={id} 
-        className="input-underline" 
+        className="input-underline"
         value={amount} 
         thousandSeparator="," 
         onChange={onChange}
         getInputRef={inputRef}
       />
-      <span className="bg-white">{label}</span>
+      <span className="bg-primary-">{label}</span>
     </article>
   );
 }
