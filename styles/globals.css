@@ -1,6 +1,42 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --background-color-background: rgb(var(--background));
+  --background-color-card: rgb(var(--card));
+  --background-color-primary: rgb(var(--primary));
+  --background-color-muted: rgb(var(--muted));
+
+  --text-color-foreground: rgb(var(--foreground));
+  --text-color-primary: rgb(var(--primary));
+  --text-color-primary-foreground: rgb(var(--primary-foreground));
+  --text-color-muted: rgb(var(--muted));
+  --text-color-error: rgb(var(--error));
+  --text-color-success: rgb(var(--success));
+  --text-color-link: rgb(var(--link));
+
+  --border-color-primary: rgb(var(--primary));
+  --border-color-card-border: rgb(var(--card-border));
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
 
 @layer base {
   :root {
@@ -39,5 +75,5 @@ body * {
 }
 
 .input-underline {
-  @apply w-11/12 border-b border-primary p-2 font-mono outline-none focus:shadow-[0_1px_0px_0px_rgba(59,130,246,1)] bg-card text-foreground;
+  @apply w-11/12 border-b border-primary p-2 font-mono outline-hidden focus:shadow-[0_1px_0px_0px_rgba(59,130,246,1)] bg-card text-foreground;
 }

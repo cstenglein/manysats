@@ -48,7 +48,7 @@ export default function Converter() {
 
   return (
     <>
-      <section className="flex w-11/12 flex-col items-center rounded border border-card-border bg-card shadow-md md:w-auto">
+      <section className="flex w-11/12 flex-col items-center rounded-sm border border-card-border bg-card shadow-md md:w-auto">
         <CurrentPrice priceData={priceData} selectedCurrency={selectedCurrency} />
         <article className="flex w-full justify-end px-2">
           <button

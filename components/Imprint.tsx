@@ -23,7 +23,7 @@ export default function Imprint({ contactDetails, websiteLink }: { contactDetail
           {contactInfo.map((line) => {
             return <p key={line}>{line}</p>;
           })}
-          <a href={websiteLink} className="text-center text-blue-500 outline-none">
+          <a href={websiteLink} className="text-center text-blue-500 outline-hidden">
             {websiteLink}
           </a>
         </section>
