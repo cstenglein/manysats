@@ -1,13 +1,16 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { NumericFormat } from "react-number-format";
 import { CurrencyItem, groupedCurrencies } from "@/models/mapping";
-import { components, GroupBase, OptionsOrGroups, SingleValue, SingleValueProps } from "react-select";
+import { components, GroupBase, OptionsOrGroups, SingleValue, SingleValueProps, Props as SelectProps } from "react-select";
 import dynamic from "next/dynamic";
+import React from "react";
 
 const Select = dynamic(() => import("react-select"), {
   ssr: false,
   loading: () => <select className="w-48 bg-primary"></select>,
 });
+
+const TypedSelect = Select as unknown as React.ComponentType<SelectProps<CurrencyItem, false, GroupBase<CurrencyItem>>>;
 
 type Props = {
   fiatAmount: string;
@@ -58,15 +61,13 @@ export default function FiatInput({ fiatAmount, onChangeFiatHandler, selectedCur
         getInputRef={inputFiat}
         onChange={onChangeFiatHandler}
       />
-      <Select
+      <TypedSelect
         className="w-48"
         options={groupedOptions}
         onInputChange={(value: string) => setInputValue(value)}
-        // @ts-expect-error works
         onChange={handleCurrencyChange}
         value={selectedCurrencyItem}
         isLoading={isLoading}
-        // @ts-expect-error works
         components={{ SingleValue: CustomSingleValue }}
         styles={{
           control: (baseStyles) => ({
@@ -81,11 +82,11 @@ export default function FiatInput({ fiatAmount, onChangeFiatHandler, selectedCur
           }),
           option: (baseStyles, state) => ({
             ...baseStyles,
-            backgroundColor: state.isFocused 
-              ? 'rgb(var(--primary))' 
+            backgroundColor: state.isFocused
+              ? 'rgb(var(--primary))'
               : 'rgb(var(--card))',
-            color: state.isFocused 
-              ? 'rgb(var(--primary-foreground))' 
+            color: state.isFocused
+              ? 'rgb(var(--primary-foreground))'
               : 'rgb(var(--foreground))',
             cursor: 'pointer',
             ':active': {
