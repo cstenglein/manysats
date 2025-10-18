@@ -36,15 +36,15 @@ export default function PriceUpdate({ date, dateKraken }: Props) {
               USD, EUR, GBP, CAD, JPY: <span className="font-bold">Every minute</span>
             </li>
             <li>
-              Other Currencies: <span className="font-bold">Every hour</span>
+              Other Currencies: <span className="font-bold">Every day</span>
             </li>
           </ul>
         </ul>
       </article>
       <article className="pt-6 text-center text-sm text-link">
         Currency rates provided by{" "}
-        <Link href="https://wahrungsrechner.info/pages/api">
-          <span className="cursor-pointer underline">wahrungsrechner.info</span>
+        <Link href="https://www.frankfurter.app">
+          <span className="cursor-pointer underline">Frankfurter API</span>
         </Link>{" "}
         and the{" "}
         <Link href="https://docs.kraken.com/rest/">

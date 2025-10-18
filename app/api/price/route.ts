@@ -6,7 +6,7 @@ export const runtime = "edge";
 
 // Get all trading pairs
 const KRAKEN_TICKER_URL = "https://api.kraken.com/0/public/Ticker";
-const TICKER_URL = "https://cdn.moneyconvert.net/api/latest.json";
+const TICKER_URL = "https://api.frankfurter.app/latest?from=USD";
 
 // Fetch timeout in milliseconds
 const FETCH_TIMEOUT = 10000; // 10 seconds
@@ -36,7 +36,13 @@ export async function GET() {
     }
 
     const tickerData = await tickerResp.json();
-    const ticker = tickerData as ExchangeRatesResponse;
+    // Transform frankfurter.app response to our format
+    const ticker: ExchangeRatesResponse = {
+      table: tickerData.base || "USD",
+      rates: tickerData.rates || {},
+      lastupdate: tickerData.date ? new Date(tickerData.date).toISOString() : new Date().toISOString(),
+      lastUpdateKraken: new Date().toISOString(),
+    };
 
     // Fetch the Kraken data with timeout
     const krakenResp = await fetch(KRAKEN_TICKER_URL, {
