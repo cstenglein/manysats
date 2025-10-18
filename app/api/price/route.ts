@@ -25,10 +25,14 @@ export async function GET() {
 
     if (!tickerResp.ok) {
       console.error(`Ticker API error: ${tickerResp.status}`);
-      return Response.json(
-        { error: "Failed to fetch exchange rates" },
-        { status: 502 }
-      );
+      // Return empty values instead of error
+      const emptyResponse: ExchangeRatesResponse = {
+        table: "USD",
+        rates: {},
+        lastupdate: new Date().toISOString(),
+        lastUpdateKraken: new Date().toISOString(),
+      };
+      return Response.json(emptyResponse);
     }
 
     const tickerData = await tickerResp.json();
@@ -44,10 +48,8 @@ export async function GET() {
 
     if (!krakenResp.ok) {
       console.error(`Kraken API error: ${krakenResp.status}`);
-      return Response.json(
-        { error: "Failed to fetch BTC rates" },
-        { status: 502 }
-      );
+      // Return ticker data without BTC rates
+      return Response.json(ticker);
     }
 
     const krakenData = await krakenResp.json();
@@ -55,10 +57,8 @@ export async function GET() {
 
     if (!krakenResult) {
       console.error("Invalid Kraken response: missing result field");
-      return Response.json(
-        { error: "Invalid response from price API" },
-        { status: 502 }
-      );
+      // Return ticker data without BTC rates
+      return Response.json(ticker);
     }
 
     // Extract rates from Kraken
@@ -70,10 +70,8 @@ export async function GET() {
 
     if (btcToUsd <= 0) {
       console.error("Invalid BTC/USD rate from Kraken");
-      return Response.json(
-        { error: "Invalid BTC rate received" },
-        { status: 502 }
-      );
+      // Return ticker data without BTC rates
+      return Response.json(ticker);
     }
 
     // Update BTC rate in ticker
@@ -87,9 +85,13 @@ export async function GET() {
     return Response.json(ticker);
   } catch (e) {
     console.error("Price API error:", e);
-    return Response.json(
-      { error: "Failed to fetch price data" },
-      { status: 500 }
-    );
+    // Return empty values instead of error
+    const emptyResponse: ExchangeRatesResponse = {
+      table: "USD",
+      rates: {},
+      lastupdate: new Date().toISOString(),
+      lastUpdateKraken: new Date().toISOString(),
+    };
+    return Response.json(emptyResponse);
   }
 }
