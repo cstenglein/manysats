@@ -32,10 +32,7 @@ export const metadata: Metadata = {
       type: "image/png",
     },
   ],
-  manifest: "/manifest.json",
-  other: {
-    lightning: "lnurlp:christoph@getalby.com",
-  },
+  manifest: "/manifest.json"
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
