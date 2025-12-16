@@ -43,6 +43,9 @@ export async function GET() {
       lastupdate: tickerData.date ? new Date(tickerData.date).toISOString() : new Date().toISOString(),
       lastUpdateKraken: new Date().toISOString(),
     };
+    // Add USD as base currency (rate 1 to itself)
+    // since the frankfurter API uses USD as base without specifying it
+    ticker.rates["USD"] = 1;
 
     // Fetch the Kraken data with timeout
     const krakenResp = await fetch(KRAKEN_TICKER_URL, {
