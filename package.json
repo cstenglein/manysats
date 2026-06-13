@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "@vercel/og": "^0.11.1",
-    "next": "16.2.6",
+    "next": "16.2.9",
     "qrcode.react": "^4.2.0",
-    "react": "19.2.6",
-    "react-dom": "19.2.6",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
     "react-number-format": "^5.4.3",
     "react-select": "^5.9.0",
     "sharp": "^0.34.3"
@@ -25,7 +25,7 @@
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "eslint": "^9.14.0",
-    "eslint-config-next": "16.2.0",
+    "eslint-config-next": "16.2.9",
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.8.0",
