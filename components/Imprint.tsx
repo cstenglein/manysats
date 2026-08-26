@@ -9,23 +9,40 @@ export default function Imprint({ contactDetails, websiteLink }: { contactDetail
 
   return (
     <>
-      <p onClick={() => dialogRef.current?.showModal()} className="cursor-pointer pt-4 underline hover:text-gray-600">
+      <button
+        type="button"
+        onClick={() => dialogRef.current?.showModal()}
+        className="cursor-pointer pt-4 underline hover:text-gray-600"
+        aria-haspopup="dialog"
+      >
         Imprint
-      </p>
-      <dialog ref={dialogRef} className="rounded border border-blue-400 bg-white p-8 shadow-md">
-        <Image
-          className="absolute right-2 top-2 h-6 w-6 cursor-pointer"
-          src={XMarkIcon}
-          alt="Close"
+      </button>
+      <dialog
+        ref={dialogRef}
+        className="rounded border border-card-border bg-card p-8 text-foreground shadow-md backdrop:bg-black/50"
+        aria-labelledby="imprint-title"
+      >
+        <button
+          type="button"
+          className="absolute top-2 right-2 h-8 w-8 cursor-pointer"
+          aria-label="Close imprint"
           onClick={() => dialogRef.current?.close()}
-        />
-        <section className="">
-          {contactInfo.map((line) => {
-            return <p key={line}>{line}</p>;
+          autoFocus
+        >
+          <Image src={XMarkIcon} alt="" />
+        </button>
+        <section>
+          <h2 id="imprint-title" className="mb-4 text-xl font-bold">
+            Imprint
+          </h2>
+          {contactInfo.map((line, index) => {
+            return <p key={`${index}:${line}`}>{line}</p>;
           })}
-          <a href={websiteLink} className="text-center text-blue-500 outline-hidden">
-            {websiteLink}
-          </a>
+          {websiteLink && (
+            <a href={websiteLink} className="text-center text-link underline">
+              {websiteLink}
+            </a>
+          )}
         </section>
       </dialog>
     </>

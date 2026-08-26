@@ -7,8 +7,13 @@ import PriceUpdate from "./PriceUpdate";
 import { useEffect, useState } from "react";
 import refreshIcon from "../public/icons/refresh.svg";
 import Image from "next/image";
+import type { ExchangeRatesResponse } from "@/models/exchangeRateResponse";
 
-export default function Converter() {
+interface Props {
+  initialPriceData: ExchangeRatesResponse | null;
+}
+
+export default function Converter({ initialPriceData }: Props) {
   const [refreshState, setRefreshState] = useState({ isDisabled: false, countdown: 60 });
   const {
     error,
@@ -17,10 +22,11 @@ export default function Converter() {
     selectedCurrency,
     onRefresh,
     onCurrencyChange,
-    onChangeFiatHandler,
-    onChangeSatHandler,
-    onChangeBtcHandler,
-  } = useConverter();
+    onChangeFiat,
+    onChangeSat,
+    onChangeBtc,
+  } = useConverter(initialPriceData);
+  const isReady = Boolean(priceData.rates.BTC && priceData.rates[selectedCurrency]);
 
   useEffect(() => {
     if (!refreshState.isDisabled) return;
@@ -43,29 +49,38 @@ export default function Converter() {
 
   return (
     <>
-      <section className="flex w-11/12 flex-col items-center rounded-sm border border-card-border bg-card shadow-md md:w-auto">
+      <section
+        className="flex w-11/12 flex-col items-center rounded-sm border border-card-border bg-card shadow-md md:w-auto"
+        aria-busy={!isReady}
+      >
         <CurrentPrice priceData={priceData} selectedCurrency={selectedCurrency} />
-        <article className="flex w-full justify-end px-2">
+        <div className="flex w-full justify-end px-2">
           <button
+            type="button"
             className="relative -top-4 z-10 -my-5 flex items-center justify-center rounded-full bg-primary p-2 text-primary-foreground disabled:bg-muted"
-            onClick={handleRefreshBtnClick}
+            onClick={() => void handleRefreshBtnClick()}
             disabled={refreshState.isDisabled}
           >
             <Image className="mr-1" src={refreshIcon} alt="" />
             {refreshState.isDisabled ? `Refresh in ${refreshState.countdown}s` : "Refresh"}
           </button>
-        </article>
+        </div>
         <FiatInput
           fiatAmount={amounts.fiat}
-          onChangeFiatHandler={onChangeFiatHandler}
+          onChange={onChangeFiat}
           selectedCurrency={selectedCurrency}
           onCurrencyChange={onCurrencyChange}
+          disabled={!isReady}
         />
-        <NumberInput id="input-sat" amount={amounts.sat} onChange={onChangeSatHandler} label="SAT" />
-        <NumberInput id="input-btc" amount={amounts.btc} onChange={onChangeBtcHandler} label="BTC" />
+        <NumberInput id="input-sat" amount={amounts.sat} onChange={onChangeSat} label="SAT" disabled={!isReady} />
+        <NumberInput id="input-btc" amount={amounts.btc} onChange={onChangeBtc} label="BTC" disabled={!isReady} />
       </section>
       {!error && <PriceUpdate date={priceData.lastupdate} dateKraken={priceData.lastUpdateKraken} />}
-      {error && <p className="pt-6 text-sm text-error">Failed to fetch price data. Please try again later</p>}
+      {error && (
+        <p className="pt-6 text-sm text-error" role="alert">
+          Failed to fetch price data. Please try again later.
+        </p>
+      )}
     </>
   );
 }
