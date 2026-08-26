@@ -2,7 +2,7 @@
 import { ExchangeRatesResponse } from "@/models/exchangeRateResponse";
 
 export const revalidate = 60;
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 // Get all trading pairs
 const KRAKEN_TICKER_URL = "https://api.kraken.com/0/public/Ticker";

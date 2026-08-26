@@ -9,8 +9,7 @@ import refreshIcon from "../public/icons/refresh.svg";
 import Image from "next/image";
 
 export default function Converter() {
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [countdown, setCountdown] = useState(60);
+  const [refreshState, setRefreshState] = useState({ isDisabled: false, countdown: 60 });
   const {
     error,
     priceData,
@@ -24,25 +23,21 @@ export default function Converter() {
   } = useConverter();
 
   useEffect(() => {
-    let timer: NodeJS.Timeout | null = null;
-    if (isDisabled && countdown > 0) {
-      timer = setInterval(() => {
-        setCountdown((prevCountdown) => prevCountdown - 1);
-      }, 1000);
-    }
+    if (!refreshState.isDisabled) return;
 
-    if (countdown === 0) {
-      setIsDisabled(false);
-      setCountdown(60);
-    }
+    const timer = window.setInterval(() => {
+      setRefreshState((current) =>
+        current.countdown <= 1
+          ? { isDisabled: false, countdown: 60 }
+          : { ...current, countdown: current.countdown - 1 },
+      );
+    }, 1000);
 
-    return () => {
-      if (timer) clearInterval(timer);
-    };
-  }, [isDisabled, countdown]);
+    return () => window.clearInterval(timer);
+  }, [refreshState.isDisabled]);
 
   const handleRefreshBtnClick = async () => {
-    setIsDisabled(true);
+    setRefreshState({ isDisabled: true, countdown: 60 });
     await onRefresh();
   };
 
@@ -54,10 +49,10 @@ export default function Converter() {
           <button
             className="relative -top-4 z-10 -my-5 flex items-center justify-center rounded-full bg-primary p-2 text-primary-foreground disabled:bg-muted"
             onClick={handleRefreshBtnClick}
-            disabled={isDisabled}
+            disabled={refreshState.isDisabled}
           >
-            <Image className="mr-1" src={refreshIcon} alt="bla" />
-            {isDisabled ? `Refresh in ${countdown}s` : "Refresh"}
+            <Image className="mr-1" src={refreshIcon} alt="" />
+            {refreshState.isDisabled ? `Refresh in ${refreshState.countdown}s` : "Refresh"}
           </button>
         </article>
         <FiatInput

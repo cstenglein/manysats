@@ -1,5 +1,5 @@
 module.exports = {
   plugins: ["prettier-plugin-tailwindcss"],
-  tailwindConfig: "./tailwind.config.js",
+  tailwindStylesheet: "./styles/globals.css",
   printWidth: 120,
 };
