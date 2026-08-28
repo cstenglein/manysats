@@ -1,13 +1,11 @@
-import { Metadata } from "next";
 import "../styles/globals.css";
-import { ThemeProvider } from "@/context/ThemeContext";
 import ThemeToggle from "@/components/ThemeToggle";
 
-import type { Viewport } from "next";
+import type { Metadata, Viewport } from "next";
+import type { ReactNode } from "react";
 
 export const viewport: Viewport = {
   themeColor: "#3b82f6",
-  userScalable: false,
 };
 
 export const metadata: Metadata = {
@@ -32,17 +30,20 @@ export const metadata: Metadata = {
       type: "image/png",
     },
   ],
-  manifest: "/manifest.json"
+  manifest: "/manifest.json",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+const themeScript = `(function(){try{var t=localStorage.getItem("theme");var d=t==="dark"||(t!=="light"&&window.matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.classList.toggle("dark",d)}catch(e){}})()`;
+
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>
-        <ThemeProvider>
-          <ThemeToggle />
-          {children}
-        </ThemeProvider>
+        <ThemeToggle />
+        {children}
       </body>
     </html>
   );

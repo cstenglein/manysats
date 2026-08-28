@@ -10,7 +10,7 @@ export const size = {
 
 export const contentType = "image/png";
 
-export default async function Image() {
+export default function Image() {
   return new ImageResponse(
     <div tw="h-full w-full flex flex-col justify-center bg-white items-center">
       <h1 tw="mb-2 mt-4 flex items-center justify-center p-4 text-9xl">

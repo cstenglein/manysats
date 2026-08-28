@@ -6,7 +6,15 @@ type Props = {
 };
 
 const formatDate = (date: string) => {
-  return new Date(date).toLocaleString(window.navigator.language);
+  return new Date(date).toLocaleString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone: "UTC",
+    timeZoneName: "short",
+  });
 };
 
 export default function PriceUpdate({ date, dateKraken }: Props) {
@@ -15,22 +23,28 @@ export default function PriceUpdate({ date, dateKraken }: Props) {
 
   return (
     <>
-      <article className="pt-6 text-sm text-link">
-        <ul className="p-2">
-          <li className="font-bold">Last updated:</li>
+      <section className="pt-6 text-sm text-link">
+        <div className="p-2">
+          <h2 className="font-bold">Last updated:</h2>
           <ul className="list-none">
             {formattedDateKraken && (
               <li>
-                USD, EUR, GBP, CAD, JPY: <span className="font-bold">{formattedDateKraken}</span>
+                USD, EUR, GBP, CAD, JPY:{" "}
+                <time className="font-bold" dateTime={dateKraken ?? undefined}>
+                  {formattedDateKraken}
+                </time>
               </li>
             )}
             {formattedDate && (
               <li>
-                Other Currencies: <span className="font-bold">{formattedDate}</span>
+                Other Currencies:{" "}
+                <time className="font-bold" dateTime={date ?? undefined}>
+                  {formattedDate}
+                </time>
               </li>
             )}
           </ul>
-          <li className="mt-4 font-bold">Update Frequency</li>
+          <h2 className="mt-4 font-bold">Update Frequency</h2>
           <ul className="list-none">
             <li>
               USD, EUR, GBP, CAD, JPY: <span className="font-bold">Every minute</span>
@@ -39,19 +53,19 @@ export default function PriceUpdate({ date, dateKraken }: Props) {
               Other Currencies: <span className="font-bold">Every day</span>
             </li>
           </ul>
-        </ul>
-      </article>
-      <article className="pt-6 text-center text-sm text-link">
+        </div>
+      </section>
+      <p className="pt-6 text-center text-sm text-link">
         Currency rates provided by{" "}
-        <Link href="https://www.frankfurter.app">
-          <span className="cursor-pointer underline">Frankfurter API</span>
+        <Link className="underline" href="https://www.frankfurter.app">
+          Frankfurter API
         </Link>{" "}
         and the{" "}
-        <Link href="https://docs.kraken.com/rest/">
-          <span className="cursor-pointer underline">Kraken REST API</span>
+        <Link className="underline" href="https://docs.kraken.com/rest/">
+          Kraken REST API
         </Link>
         .
-      </article>
+      </p>
     </>
   );
 }

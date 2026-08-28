@@ -1,5 +1,6 @@
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { ExchangeRatesResponse } from "@/models/exchangeRateResponse";
+import { useEffect, useState } from "react";
+import { isExchangeRatesResponse } from "@/models/exchangeRateResponse";
+import type { ExchangeRatesResponse } from "@/models/exchangeRateResponse";
 import {
   convertBtcToFiat,
   convertBtcToSat,
@@ -16,19 +17,35 @@ type Amounts = {
   btc: string;
 };
 
-async function fetchData(): Promise<ExchangeRatesResponse> {
-  const res = await fetch("/api/price");
-  return await res.json();
+const emptyPriceData: ExchangeRatesResponse = {
+  table: "",
+  rates: {},
+  lastupdate: "",
+  lastUpdateKraken: "",
+};
+
+async function fetchData(signal?: AbortSignal): Promise<ExchangeRatesResponse> {
+  const response = await fetch("/api/price", { signal });
+  if (!response.ok) {
+    throw new Error(`Price API responded with ${response.status}`);
+  }
+
+  const value: unknown = await response.json();
+  if (!isExchangeRatesResponse(value)) {
+    throw new Error("Price API returned an invalid response");
+  }
+
+  return value;
 }
 
-export function useConverter() {
+function getStoredCurrency(priceData: ExchangeRatesResponse): string | null {
+  const storedCurrency = localStorage.getItem("currency");
+  return storedCurrency && priceData.rates[storedCurrency] ? storedCurrency : null;
+}
+
+export function useConverter(initialPriceData: ExchangeRatesResponse | null) {
   const [error, setError] = useState<boolean>(false);
-  const [priceData, setPriceData] = useState<ExchangeRatesResponse>({
-    table: "",
-    rates: {},
-    lastupdate: "",
-    lastUpdateKraken: "",
-  });
+  const [priceData, setPriceData] = useState<ExchangeRatesResponse>(initialPriceData ?? emptyPriceData);
   const [amounts, setAmounts] = useState<Amounts>({
     fiat: "",
     sat: "",
@@ -36,37 +53,33 @@ export function useConverter() {
   });
   const [selectedCurrency, setSelectedCurrency] = useState<string>("USD");
 
-  const checkLocalStorage = useCallback((priceData: ExchangeRatesResponse) => {
-    if (localStorage.getItem("currency")) {
-      if (priceData.rates[localStorage.getItem("currency")!]) {
-        setSelectedCurrency(localStorage.getItem("currency")!);
-      }
-    }
-  }, []);
-
-  const validateData = useCallback(
-    (data: ExchangeRatesResponse) => {
-      setPriceData(data);
-      checkLocalStorage(data);
-    },
-    [checkLocalStorage],
-  );
-
   useEffect(() => {
-    fetchData()
-      .then(validateData)
-      .catch(() => setError(true));
-  }, [validateData]);
+    const controller = new AbortController();
 
-  const onRefresh = useCallback(async () => {
+    const loadPriceData = async () => {
+      try {
+        const data = initialPriceData ?? (await fetchData(controller.signal));
+        setPriceData(data);
+        setSelectedCurrency(getStoredCurrency(data) ?? "USD");
+      } catch (loadError) {
+        if (loadError instanceof DOMException && loadError.name === "AbortError") return;
+        setError(true);
+      }
+    };
+
+    void loadPriceData();
+    return () => controller.abort();
+  }, [initialPriceData]);
+
+  const onRefresh = async () => {
     setError(false);
     try {
       const data = await fetchData();
-      validateData(data);
+      setPriceData(data);
     } catch {
       setError(true);
     }
-  }, [validateData]);
+  };
 
   const onCurrencyChange = (currencyCode: string) => {
     if (!priceData.rates[currencyCode] || currencyCode === selectedCurrency) return;
@@ -86,15 +99,11 @@ export function useConverter() {
     });
   };
 
-  const onChangeFiatHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    const fiatAmount = event.target.value;
+  const onChangeFiat = (fiatAmount: string) => {
     updateAmounts(fiatAmount, selectedCurrency);
   };
 
-  const onChangeSatHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    const satAmount = event.target.value;
+  const onChangeSat = (satAmount: string) => {
     const btcPrice = getBtcPrice(priceData, selectedCurrency);
 
     setAmounts({
@@ -104,9 +113,7 @@ export function useConverter() {
     });
   };
 
-  const onChangeBtcHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    const btcAmount = event.target.value;
+  const onChangeBtc = (btcAmount: string) => {
     const btcPrice = getBtcPrice(priceData, selectedCurrency);
 
     setAmounts({
@@ -123,9 +130,8 @@ export function useConverter() {
     selectedCurrency,
     onRefresh,
     onCurrencyChange,
-    onChangeFiatHandler,
-    onChangeSatHandler,
-    onChangeBtcHandler,
-    getBtcPrice,
+    onChangeFiat,
+    onChangeSat,
+    onChangeBtc,
   };
 }
